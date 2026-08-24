@@ -6,6 +6,7 @@
  * Server-Übertragung. Anwaltlich prüfen lassen — siehe docs/uebergabe.md.
  */
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import { contact, site } from '../data/site';
 
 const title = 'Datenschutz – Staudt Hydraulik';
@@ -13,16 +14,11 @@ const description = 'Datenschutzerklärung der Staudt-Hydraulik GmbH & Co. KG, G
 ---
 
 <Base title={title} description={description}>
-  <section class="band page-hero">
-    <div class="shell">
-      <p class="eyebrow">Rechtliches</p>
-      <h1>Datenschutzerklärung</h1>
-      <p class="lead">
-        Diese Erklärung informiert Sie über die Verarbeitung personenbezogener Daten bei der
-        Nutzung unserer Webseite.
-      </p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="Rechtliches"
+    titel="Datenschutzerklärung"
+    lead="Diese Erklärung informiert Sie über die Verarbeitung personenbezogener Daten bei der Nutzung unserer Webseite."
+  />
 
   <section class="band band--tight">
     <div class="shell prose legal">

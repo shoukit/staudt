@@ -9,6 +9,7 @@ import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
 import { ansprechpartner, contact, kontaktSeite } from '../data/site';
 
 const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
@@ -30,13 +31,7 @@ const description =
 ---
 
 <Base title={title} description={description}>
-  <section class="band page-hero">
-    <div class="shell">
-      <p class="eyebrow">Kontakt</p>
-      <h1>Ihre Ansprechpartner</h1>
-      <p class="lead">{kontaktSeite.intro}</p>
-    </div>
-  </section>
+  <PageHero eyebrow="Kontakt" titel="Ihre Ansprechpartner" lead={kontaktSeite.intro} />
 
   <section class="band band--wash">
     <div class="shell">
@@ -139,18 +134,6 @@ const description =
 </Base>
 
 <style>
-  .page-hero {
-    background:
-      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
-      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
-    padding-block: var(--space-xl);
-  }
-
-  .page-hero .shell {
-    display: grid;
-    gap: var(--space-sm);
-  }
-
   .team {
     list-style: none;
     padding: 0;

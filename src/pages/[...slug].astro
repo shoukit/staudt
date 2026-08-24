@@ -9,6 +9,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import KontaktBand from '../components/KontaktBand.astro';
+import PageHero from '../components/PageHero.astro';
 import { produkte } from '../data/produkte';
 import { contact } from '../data/site';
 
@@ -42,18 +43,15 @@ const anfrageMailto =
 ---
 
 <Base title={title} description={description}>
-  <section class="band page-hero">
-    <div class="shell">
-      <nav class="crumbs" aria-label="Pfad">
-        <a href="/hydraulikzylinder/">Hydraulikzylinder</a>
-        <Icon name="ChevronRight" size={14} />
-        <span aria-current="page">{produkt.nr} · {produkt.kategorie}</span>
-      </nav>
-      <h1>{produkt.kategorie}</h1>
-    </div>
-  </section>
+  <PageHero eyebrow={`Referenzprodukt ${produkt.nr}`} titel={produkt.kategorie}>
+    <nav class="crumbs" aria-label="Pfad" slot="top">
+      <a href="/hydraulikzylinder/">Hydraulikzylinder</a>
+      <Icon name="ChevronRight" size={14} />
+      <span aria-current="page">{produkt.nr} · {produkt.kategorie}</span>
+    </nav>
+  </PageHero>
 
-  <div class:list={['grafikband', { 'grafikband--hell': produkt.grafikHell }]}>
+  <div class="grafikband">
     <div class="shell">
       <Image
         src={bild(produkt.grafik)}
@@ -83,7 +81,6 @@ const anfrageMailto =
       </figure>
 
       <div class="produkt__copy">
-        <p class="eyebrow">Referenzprodukt {produkt.nr}</p>
         <h2>{produkt.titel}</h2>
         {produkt.untertitel && <p class="produkt__unter">{produkt.untertitel}</p>}
         {
@@ -165,18 +162,6 @@ const anfrageMailto =
 </Base>
 
 <style>
-  .page-hero {
-    background:
-      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
-      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
-    padding-block: var(--space-xl) var(--space-lg);
-  }
-
-  .page-hero .shell {
-    display: grid;
-    gap: var(--space-sm);
-  }
-
   .crumbs {
     display: flex;
     flex-wrap: wrap;
@@ -204,15 +189,12 @@ const anfrageMailto =
     flex: none;
   }
 
-  /* Technische Zeichnung als Band: schwarz für helle Linien, hell für dunkle */
+  /* Technische Zeichnung als helles Band (Kundenwunsch: nicht dunkel);
+     Zeichnungen mit hellen Linien sind dafür invertiert. */
   .grafikband {
-    background: #0c0c0c;
-    padding-block: var(--space-lg);
-  }
-
-  .grafikband--hell {
     background: var(--wash);
     border-block: 1px solid var(--line);
+    padding-block: var(--space-lg);
   }
 
   .grafikband :global(.grafikband__img) {

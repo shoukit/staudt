@@ -15,8 +15,6 @@ export type Produkt = {
   absaetze?: readonly string[];
   hinweis?: string;
   grafik: string;
-  /** true = dunkle Linien → helles Zeichnungs-Band statt schwarzem */
-  grafikHell?: boolean;
   grafikAlt: string;
   foto: string;
   fotoAlt: string;
@@ -120,7 +118,6 @@ export const produkte: readonly Produkt[] = [
     kategorie: 'Kleinzylinder',
     titel: 'Doppeltwirkender Hydraulikzylinder',
     grafik: 'klein-grafik',
-    grafikHell: true,
     grafikAlt: 'Technische Zeichnung: Kleinzylinder',
     foto: 'klein-750',
     fotoAlt: 'Kleinzylinder',
@@ -308,7 +305,6 @@ export const produkte: readonly Produkt[] = [
     untertitel:
       'Elektro-Hydraulische-Kompakteinheit für den Einsatz in explosionssicheren Umgebungen (ATEX) in der Petro-Chemie. Die Elektro-Hydraulische -Einheit bietet eine kompakte, Plug & Play Lösung, die Antrieb, Steuerung, Aktuator sowie entsprechende Messtechnik vereint.',
     grafik: 'elektro-grafik',
-    grafikHell: true,
     grafikAlt: 'Technische Zeichnung: Elektro-hydraulische Einheit',
     foto: 'elektro-750',
     fotoAlt: 'Elektro-hydraulische Einheit',
@@ -331,7 +327,6 @@ export const produkte: readonly Produkt[] = [
     untertitel:
       'In reibungsarmer Ausführung, mit integriertem Wegmesssystem sowie aufgebautem Steuerblock für ein Servo-/Proportionalventil. Die Kolbenstange verfügt darüber hinaus über eine spezielle Aufnahme für Dehnmessstreifen.',
     grafik: 'pruef-grafik',
-    grafikHell: true,
     grafikAlt: 'Technische Zeichnung: Prüfzylinder mit Membranspeicher',
     foto: 'pruef-750',
     fotoAlt: 'Prüfzylinder',
@@ -375,7 +370,6 @@ export const produkte: readonly Produkt[] = [
     titel: 'Zugankerzylinder',
     untertitel: 'Platzhalter',
     grafik: 'zuganker-grafik',
-    grafikHell: true,
     grafikAlt: 'Technische Zeichnung: Zugankerzylinder',
     foto: 'zuganker-750',
     fotoAlt: 'Zugankerzylinder',

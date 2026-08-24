@@ -9,6 +9,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import KontaktBand from '../components/KontaktBand.astro';
+import PageHero from '../components/PageHero.astro';
 import { fehlendeProdukte, produkte } from '../data/produkte';
 
 const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
@@ -30,15 +31,11 @@ const description =
 ---
 
 <Base title={title} description={description}>
-  <section class="band page-hero">
-    <div class="shell">
-      <p class="eyebrow">Produkte</p>
-      <h1>Hydraulikzylinder</h1>
-      <p class="lead">
-        Referenzprodukte aus unserer Fertigung — von der Serie bis zur Sonderkonstruktion.
-      </p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="Produkte"
+    titel="Hydraulikzylinder"
+    lead="Referenzprodukte aus unserer Fertigung — von der Serie bis zur Sonderkonstruktion."
+  />
 
   <section class="band band--wash">
     <div class="shell">
@@ -87,18 +84,6 @@ const description =
 </Base>
 
 <style>
-  .page-hero {
-    background:
-      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
-      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
-    padding-block: var(--space-xl);
-  }
-
-  .page-hero .shell {
-    display: grid;
-    gap: var(--space-sm);
-  }
-
   .grid {
     list-style: none;
     padding: 0;

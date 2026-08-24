@@ -4,6 +4,7 @@
  * Haftungstexte siehe docs/uebergabe.md).
  */
 import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
 import { contact, site } from '../data/site';
 
 const title = 'Impressum – Staudt Hydraulik';
@@ -11,12 +12,7 @@ const description = 'Impressum der Staudt-Hydraulik GmbH & Co. KG, Ottostraße 8
 ---
 
 <Base title={title} description={description}>
-  <section class="band page-hero">
-    <div class="shell">
-      <p class="eyebrow">Rechtliches</p>
-      <h1>Impressum</h1>
-    </div>
-  </section>
+  <PageHero eyebrow="Rechtliches" titel="Impressum" />
 
   <section class="band band--tight">
     <div class="shell prose legal">

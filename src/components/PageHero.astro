@@ -1,0 +1,81 @@
+---
+/**
+ * Einheitlicher Seiten-Hero mit dem Fertigungshallen-Bild der Startseite —
+ * Kundenwunsch: das Hero-Bild soll auf allen Seiten übernommen werden.
+ * Text links, Foto rechts; Zusatzinhalt (z. B. Breadcrumbs) über den Slot
+ * „top", weiterer Inhalt unter dem Lead über den Default-Slot.
+ */
+import { Image } from 'astro:assets';
+import fertigungshalle from '../assets/fertigungshalle.jpg';
+
+interface Props {
+  eyebrow: string;
+  titel: string;
+  lead?: string;
+}
+
+const { eyebrow, titel, lead } = Astro.props;
+---
+
+<section class="band page-hero">
+  <div class="shell page-hero__grid">
+    <div class="page-hero__copy">
+      <slot name="top" />
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{titel}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+    <figure class="page-hero__figure">
+      <Image
+        src={fertigungshalle}
+        alt="Die CNC-Fertigungshalle von Staudt Hydraulik"
+        widths={[480, 720, 980]}
+        sizes="(min-width: 60rem) 40vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={80}
+        class="page-hero__img"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero__grid {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+
+  .page-hero__copy {
+    display: grid;
+    gap: var(--space-sm);
+    justify-items: start;
+  }
+
+  .page-hero__figure {
+    margin: 0;
+  }
+
+  .page-hero :global(.page-hero__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  @media (min-width: 60rem) {
+    .page-hero__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+</style>
