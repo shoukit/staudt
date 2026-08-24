@@ -16,7 +16,7 @@ const isCurrent = (href: string) =>
 
 <header class="site-header">
   {/* Kundenwunsch: Kontakt-Button links, Logo rechts. */}
-  <div class="shell site-header__inner">
+  <div class="site-header__inner">
     <a class="btn btn--primary site-header__cta" href="/kontakt/">
       <Icon name="Mail" size={17} />
       <span>Anfragen</span>
@@ -43,12 +43,33 @@ const isCurrent = (href: string) =>
             <li>
               <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
                 {item.label}
+                <Icon name="ChevronRight" size={16} class="site-nav__chevron" />
               </a>
             </li>
           ))
         }
+        <li class="site-nav__extra">
+          <a href="/suche/">
+            Suche
+            <Icon name="Search" size={16} class="site-nav__chevron" />
+          </a>
+        </li>
       </ul>
+      <div class="site-nav__kontakt">
+        <a href={contact.phoneHref}>
+          <Icon name="Phone" size={16} />
+          {contact.phone}
+        </a>
+        <a href={contact.emailHref}>
+          <Icon name="Mail" size={16} />
+          {contact.email}
+        </a>
+      </div>
     </nav>
+
+    <a class="suche-link" href="/suche/" aria-label="Website durchsuchen">
+      <Icon name="Search" size={19} />
+    </a>
 
     <a class="wordmark" href="/">
       <Image
@@ -65,7 +86,7 @@ const isCurrent = (href: string) =>
 </header>
 
 <script>
-  const BREAKPOINT = window.matchMedia('(min-width: 78rem)');
+  const BREAKPOINT = window.matchMedia('(min-width: 80rem)');
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = header?.querySelector<HTMLButtonElement>('.nav-toggle');
   const label = toggle?.querySelector<HTMLElement>('.nav-toggle__label');
@@ -131,8 +152,10 @@ const isCurrent = (href: string) =>
   }
 
   .site-header__inner {
+    width: min(88rem, 100% - clamp(1.5rem, 5vw, 4rem));
+    margin-inline: auto;
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto auto 1fr auto;
     align-items: center;
     gap: var(--space-sm) var(--space-md);
     padding-block: var(--space-xs);
@@ -146,7 +169,7 @@ const isCurrent = (href: string) =>
   }
 
   .wordmark :global(.wordmark__img) {
-    width: 170px;
+    width: 160px;
     height: auto;
   }
 
@@ -189,17 +212,40 @@ const isCurrent = (href: string) =>
     display: none;
   }
 
+  /* ---- Ausgeklapptes Panel (Burger-Menü) --------------------------------- */
+
   .site-nav {
     grid-column: 1 / -1;
     grid-row: 2;
-    border-top: 1px solid var(--line);
-    margin-top: var(--space-xs);
-    padding-block: var(--space-xs);
+    margin-block: var(--space-xs) var(--space-sm);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    padding: var(--space-sm);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .site-header[data-nav-open='true'] .site-nav {
+      animation: nav-in 0.28s var(--ease) both;
+    }
+
+    @keyframes nav-in {
+      from {
+        opacity: 0;
+        translate: 0 -10px;
+      }
+      to {
+        opacity: 1;
+        translate: 0 0;
+      }
+    }
   }
 
   .site-nav ul {
     display: flex;
     flex-direction: column;
+    gap: 2px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -208,17 +254,93 @@ const isCurrent = (href: string) =>
   .site-nav a {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
     min-height: var(--tap);
     width: 100%;
-    font-size: var(--step-small);
+    padding-inline: var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--step-base);
     font-weight: 600;
     text-decoration: none;
-    color: var(--soft);
+    color: var(--slate);
     white-space: nowrap;
   }
 
-  .site-nav a:hover,
+  .site-nav a:hover {
+    background: var(--wash);
+    color: var(--steel);
+  }
+
   .site-nav a[aria-current] {
+    background: var(--wash);
+    color: var(--steel);
+  }
+
+  .site-nav :global(.site-nav__chevron) {
+    color: var(--line-strong);
+    flex: none;
+  }
+
+  .site-nav a:hover :global(.site-nav__chevron),
+  .site-nav a[aria-current] :global(.site-nav__chevron) {
+    color: var(--steel);
+  }
+
+  .site-nav__extra {
+    border-top: 1px solid var(--line);
+    margin-top: var(--space-2xs);
+    padding-top: var(--space-2xs);
+  }
+
+  .site-nav__kontakt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-md);
+    margin-top: var(--space-sm);
+    padding: var(--space-sm) var(--space-sm) var(--space-2xs);
+    border-top: 1px solid var(--line);
+  }
+
+  .site-nav__kontakt a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    padding-inline: 0;
+    gap: 0.45em;
+    min-height: var(--tap);
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--soft);
+    text-decoration: none;
+  }
+
+  .site-nav__kontakt a:hover {
+    background: transparent;
+  }
+
+  .site-nav__kontakt a:hover {
+    color: var(--steel);
+  }
+
+  .site-nav__kontakt :global(svg) {
+    color: var(--steel);
+  }
+
+  .suche-link {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    color: var(--slate);
+    background: transparent;
+  }
+
+  .suche-link:hover {
+    border-color: var(--steel);
     color: var(--steel);
   }
 
@@ -239,9 +361,9 @@ const isCurrent = (href: string) =>
     }
   }
 
-  @media (min-width: 78rem) {
+  @media (min-width: 80rem) {
     .site-header__inner {
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr auto auto;
       gap: var(--space-sm);
     }
 
@@ -252,11 +374,20 @@ const isCurrent = (href: string) =>
     .site-nav {
       grid-column: 2;
       grid-row: 1;
-      border-top: 0;
-      margin-top: 0;
-      padding-block: 0;
+      margin-block: 0;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
       justify-self: center;
       min-width: 0;
+    }
+
+    .site-nav :global(.site-nav__chevron),
+    .site-nav__extra,
+    .site-nav__kontakt {
+      display: none;
     }
 
     .site-nav ul {
@@ -275,6 +406,8 @@ const isCurrent = (href: string) =>
       min-height: 38px;
       padding: 0 0.75rem;
       font-size: 0.875rem;
+      justify-content: center;
+      color: var(--soft);
       border-radius: var(--radius-pill);
       white-space: nowrap;
     }

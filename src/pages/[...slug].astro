@@ -43,7 +43,12 @@ const anfrageMailto =
 ---
 
 <Base title={title} description={description}>
-  <PageHero eyebrow={`Referenzprodukt ${produkt.nr}`} titel={produkt.kategorie}>
+  <PageHero
+    eyebrow={`Referenzprodukt ${produkt.nr}`}
+    titel={produkt.kategorie}
+    banner="header-produkte"
+    bannerAlt="Bei Hydraulikzylindern macht uns keiner was vor. Höchstens nach."
+  >
     <nav class="crumbs" aria-label="Pfad" slot="top">
       <a href="/hydraulikzylinder/">Hydraulikzylinder</a>
       <Icon name="ChevronRight" size={14} />

@@ -1,0 +1,315 @@
+---
+/**
+ * Volltextsuche über alle Seiten. Der Index wird beim Build von Pagefind
+ * aus dist/ erzeugt (npm run build) und liegt komplett lokal unter
+ * /pagefind/ — keine externen Dienste, keine Cookies. Im Dev-Modus
+ * (npm run dev) existiert der Index noch nicht; dafür der Hinweis unten.
+ */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+
+const title = 'Suche – Staudt Hydraulik';
+const description =
+  'Durchsuchen Sie die Website von Staudt Hydraulik: Produkte, technische Daten, Services und mehr.';
+
+const beliebt = [
+  'Teleskopzylinder',
+  'Sonderzylinder',
+  'ATEX',
+  'Edelstahl',
+  'Reparaturservice',
+  'Karriere',
+];
+---
+
+<Base title={title} description={description}>
+  <PageHero
+    eyebrow="Suche"
+    titel="Wonach suchen Sie?"
+    lead="Durchsuchen Sie alle Seiten — Produkte, technische Daten, Services, Karriere."
+  />
+
+  <section class="band band--wash">
+    <div class="shell">
+      <div class="suche-panel" data-pagefind-ignore>
+        <div id="suche" class="suche"></div>
+
+        <div class="beliebt" id="beliebt">
+          <p class="beliebt__label">Häufig gesucht</p>
+          <ul>
+            {
+              beliebt.map((b) => (
+                <li>
+                  <button type="button" class="beliebt__chip" data-begriff={b}>
+                    <Icon name="Search" size={14} />
+                    {b}
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <noscript>
+          <p class="suche__hinweis">
+            Die Suche benötigt JavaScript. Alle Inhalte erreichen Sie auch über die
+            <a href="/">Startseite</a> und die Navigation.
+          </p>
+        </noscript>
+      </div>
+    </div>
+  </section>
+
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof PagefindUI === 'undefined') {
+        document.getElementById('suche').innerHTML =
+          '<p class="suche__hinweis">Der Suchindex wird erst beim Build erzeugt (npm run build).</p>';
+        return;
+      }
+      new PagefindUI({
+        element: '#suche',
+        showSubResults: true,
+        showImages: false,
+        autofocus: true,
+        translations: {
+          placeholder: 'Suchbegriff eingeben …',
+          clear_search: 'Leeren',
+          load_more: 'Weitere Ergebnisse laden',
+          search_label: 'Website durchsuchen',
+          filters_label: 'Filter',
+          zero_results: 'Keine Ergebnisse für „[SEARCH_TERM]“',
+          many_results: '[COUNT] Ergebnisse für „[SEARCH_TERM]“',
+          one_result: 'Ein Ergebnis für „[SEARCH_TERM]“',
+          searching: 'Suche nach „[SEARCH_TERM]“ …',
+        },
+      });
+
+      const eingabe = document.querySelector('.pagefind-ui__search-input');
+
+      const suchen = (begriff) => {
+        if (!eingabe) return;
+        eingabe.value = begriff;
+        eingabe.dispatchEvent(new Event('input', { bubbles: true }));
+        eingabe.focus();
+      };
+
+      document.querySelectorAll('.beliebt__chip').forEach((chip) => {
+        chip.addEventListener('click', () => suchen(chip.dataset.begriff));
+      });
+
+      // ?q=… aus der URL übernehmen (z. B. für geteilte Links)
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) suchen(q);
+    });
+  </script>
+</Base>
+
+<style>
+  /* ---- Panel --------------------------------------------------------------- */
+
+  .suche-panel {
+    max-width: 52rem;
+    margin-inline: auto;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    min-height: 46vh;
+  }
+
+  .suche__hinweis {
+    color: var(--soft);
+  }
+
+  /* ---- Häufig gesucht ------------------------------------------------------ */
+
+  .beliebt {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--line);
+  }
+
+  .beliebt__label {
+    font-size: var(--step-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: var(--space-sm);
+  }
+
+  .beliebt ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .beliebt__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    min-height: 40px;
+    padding: 0.35rem 1rem;
+    background: var(--wash);
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    font-family: var(--font);
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--slate);
+    cursor: pointer;
+  }
+
+  .beliebt__chip:hover {
+    border-color: var(--steel);
+    color: var(--steel);
+  }
+
+  .beliebt__chip :global(svg) {
+    color: var(--steel);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .beliebt__chip {
+      transition:
+        border-color var(--t-base) var(--ease),
+        color var(--t-base) var(--ease),
+        transform var(--t-base) var(--ease);
+    }
+
+    .beliebt__chip:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* ---- Pagefind-UI im Markenkleid ------------------------------------------ */
+
+  .suche {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--steel);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: #fff;
+    --pagefind-ui-border: var(--line);
+    --pagefind-ui-tag: var(--wash);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 12px;
+    --pagefind-ui-font: var(--font);
+  }
+
+  /* Eingabefeld: große Pille mit Lupe */
+  .suche :global(.pagefind-ui__form::before) {
+    background-color: var(--steel);
+  }
+
+  .suche :global(.pagefind-ui__search-input) {
+    border: 2px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    font-size: 1.0625rem;
+    height: 3.5rem;
+    padding-left: 3.2rem;
+    background: var(--paper);
+  }
+
+  .suche :global(.pagefind-ui__search-input:hover) {
+    border-color: var(--steel);
+  }
+
+  .suche :global(.pagefind-ui__search-input:focus-visible) {
+    outline: 3px solid var(--action);
+    outline-offset: 2px;
+    border-color: var(--steel);
+  }
+
+  .suche :global(.pagefind-ui__search-clear) {
+    color: var(--steel);
+    font-weight: 600;
+    padding-right: 1.2rem;
+  }
+
+  /* Trefferzeile */
+  .suche :global(.pagefind-ui__message) {
+    color: var(--soft);
+    font-weight: 600;
+    padding-top: var(--space-md);
+  }
+
+  /* Ergebnisse als Karten */
+  .suche :global(.pagefind-ui__result) {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+    margin-top: var(--space-sm);
+    background: #fff;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .suche :global(.pagefind-ui__result) {
+      transition:
+        box-shadow var(--t-base) var(--ease),
+        border-color var(--t-base) var(--ease),
+        transform var(--t-base) var(--ease);
+    }
+
+    .suche :global(.pagefind-ui__result:hover) {
+      border-color: var(--steel);
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-2px);
+    }
+  }
+
+  .suche :global(.pagefind-ui__result-title) {
+    font-weight: 650;
+  }
+
+  .suche :global(.pagefind-ui__result-link) {
+    color: var(--steel);
+  }
+
+  .suche :global(.pagefind-ui__result-link:hover) {
+    text-decoration: underline;
+  }
+
+  .suche :global(.pagefind-ui__result-excerpt) {
+    color: var(--soft);
+    font-size: var(--step-small);
+  }
+
+  .suche :global(.pagefind-ui__result-excerpt mark) {
+    background: #d6e4f5;
+    color: var(--slate);
+    font-weight: 650;
+    border-radius: 3px;
+    padding: 0 3px;
+  }
+
+  /* Unterergebnisse (Abschnitte einer Seite) */
+  .suche :global(.pagefind-ui__result-nested) {
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--line);
+    margin-top: var(--space-xs);
+  }
+
+  /* „Weitere laden" als Ghost-Pille */
+  .suche :global(.pagefind-ui__button) {
+    border: 2px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--steel);
+    font-family: var(--font);
+    font-weight: 600;
+    margin-top: var(--space-md);
+  }
+
+  .suche :global(.pagefind-ui__button:hover) {
+    border-color: var(--steel);
+    background: var(--wash);
+  }
+</style>

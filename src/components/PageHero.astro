@@ -1,10 +1,13 @@
 ---
 /**
- * Einheitlicher Seiten-Hero mit dem Fertigungshallen-Bild der Startseite —
- * Kundenwunsch: das Hero-Bild soll auf allen Seiten übernommen werden.
- * Text links, Foto rechts; Zusatzinhalt (z. B. Breadcrumbs) über den Slot
- * „top", weiterer Inhalt unter dem Lead über den Default-Slot.
+ * Seiten-Hero. Zwei Varianten:
+ * 1. `banner`: das seitenspezifische Original-Headerbild der Vorlage in
+ *    voller Breite (Slogan ist im Bild eingebacken — deshalb trägt das Bild
+ *    den Slogan als Alt-Text), darunter kompakt Eyebrow + H1.
+ * 2. ohne `banner`: Text links, Fertigungshallen-Foto rechts (Fallback für
+ *    Seiten ohne Original-Header, z. B. Impressum/Datenschutz).
  */
+import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import fertigungshalle from '../assets/fertigungshalle.jpg';
 
@@ -12,36 +15,113 @@ interface Props {
   eyebrow: string;
   titel: string;
   lead?: string;
+  banner?: string;
+  bannerAlt?: string;
 }
 
-const { eyebrow, titel, lead } = Astro.props;
+const { eyebrow, titel, lead, banner, bannerAlt } = Astro.props;
+
+const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+
+let bannerBild: ImageMetadata | undefined;
+if (banner) {
+  for (const [pfad, mod] of Object.entries(alleBilder)) {
+    if (pfad.split('/').pop()!.replace(/\.(jpg|jpeg|png)$/, '') === banner) {
+      bannerBild = mod.default;
+      break;
+    }
+  }
+  if (!bannerBild) throw new Error(`Header-Bild "${banner}" nicht gefunden`);
+}
 ---
 
-<section class="band page-hero">
-  <div class="shell page-hero__grid">
-    <div class="page-hero__copy">
-      <slot name="top" />
-      <p class="eyebrow">{eyebrow}</p>
-      <h1>{titel}</h1>
-      {lead && <p class="lead">{lead}</p>}
-      <slot />
-    </div>
-    <figure class="page-hero__figure">
-      <Image
-        src={fertigungshalle}
-        alt="Die CNC-Fertigungshalle von Staudt Hydraulik"
-        widths={[480, 720, 980]}
-        sizes="(min-width: 60rem) 40vw, 100vw"
-        loading="eager"
-        fetchpriority="high"
-        quality={80}
-        class="page-hero__img"
-      />
-    </figure>
-  </div>
-</section>
+{
+  bannerBild ? (
+    <>
+      <div class="banner">
+        <Image
+          src={bannerBild}
+          alt={bannerAlt ?? titel}
+          widths={[768, 1280, 1950]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={80}
+          class="banner__img"
+        />
+      </div>
+      <section class="band kopf">
+        <div class="shell kopf__inner">
+          <slot name="top" />
+          <p class="eyebrow">{eyebrow}</p>
+          <h1>{titel}</h1>
+          {lead && <p class="lead">{lead}</p>}
+          <slot />
+        </div>
+      </section>
+    </>
+  ) : (
+    <section class="band page-hero">
+      <div class="shell page-hero__grid">
+        <div class="page-hero__copy">
+          <slot name="top" />
+          <p class="eyebrow">{eyebrow}</p>
+          <h1>{titel}</h1>
+          {lead && <p class="lead">{lead}</p>}
+          <slot />
+        </div>
+        <figure class="page-hero__figure">
+          <Image
+            src={fertigungshalle}
+            alt="Die CNC-Fertigungshalle von Staudt Hydraulik"
+            widths={[480, 720, 980]}
+            sizes="(min-width: 60rem) 40vw, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            quality={80}
+            class="page-hero__img"
+          />
+        </figure>
+      </div>
+    </section>
+  )
+}
 
 <style>
+  /* ---- Original-Banner der Vorlage (Slogan im Bild) ----------------------- */
+
+  .banner {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    overflow: clip;
+  }
+
+  .banner :global(.banner__img) {
+    width: 100%;
+    height: auto;
+    max-height: 72vh;
+    object-fit: cover;
+    object-position: left center;
+  }
+
+  .kopf {
+    padding-block: var(--space-xl) var(--space-lg);
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+  }
+
+  .kopf__inner {
+    display: grid;
+    gap: var(--space-sm);
+    justify-items: start;
+  }
+
+  /* ---- Fallback: Text + Fertigungshalle ----------------------------------- */
+
   .page-hero {
     background:
       radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),

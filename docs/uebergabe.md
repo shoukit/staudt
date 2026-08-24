@@ -92,6 +92,22 @@ Vollständig geprüft am Stand des letzten Commits:
   („Your Name / Last Name …") — konsolidiert auf die Kontaktseite; der Satz „Sie haben ein
   Projekt und brauchen Unterstützung. Wir beraten Sie gerne." ging damit auf.
 
+## Header-Banner & Suche (Nachtrag)
+
+- **Original-Headerbilder** der Vorlage (per Media-API gefunden — die Slogans sind in die
+  Bilder eingebacken, daher tragen die Bilder die Slogans als Alt-Text): Wir über uns
+  („Tradition triff Präzision …" — „triff" ist der Original-Stand), Produkte (auf Übersicht +
+  allen 16 Produktseiten), Branchen, Services, Karriere, Kontakt. Impressum/Datenschutz/Suche
+  nutzen den neutralen Fertigungshallen-Hero.
+- **Volltextsuche** unter `/suche/` mit Pagefind: Index entsteht bei `npm run build` in
+  `dist/pagefind/` — komplett lokal, keine externen Dienste, keine Cookies (Datenschutz
+  unverändert). Indexiert wird nur der Seiteninhalt (`data-pagefind-body` auf `<main>`).
+  Zugang über das Lupen-Icon im Header, den Menüpunkt im Burger-Menü und den Footer;
+  `?q=Begriff` in der URL startet die Suche direkt. Im Dev-Modus existiert der Index nicht
+  (Hinweis erscheint auf der Seite).
+- **Burger-Menü** als Panel: Karte mit Zeilen-Hover, aktiver Markierung, Suche-Eintrag und
+  Telefon/E-Mail unten; sanfte Einblend-Animation (nur ohne reduced motion).
+
 ## Technisch
 
 - `npm run dev` lokal · `npm run build` → `dist/` (committet, FTP-fertig).
