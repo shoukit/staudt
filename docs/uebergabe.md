@@ -48,8 +48,8 @@ dieser Eigenheiten, die die Firma bewusst prüfen/korrigieren sollte:
 
 1. Hierarchie: eine H1 pro Seite (Vorlage hatte 3× H2 pro Produktseite, H1 mitten auf der
    Startseite).
-2. Technische Daten als echte Tabellen; technische Zeichnungen als Band (schwarz für helle
-   Linienzeichnungen, hell für dunkle).
+2. Technische Daten als echte Tabellen; technische Zeichnungen auf hellem Band (vier
+   Zeichnungen mit hellen Linien dafür invertiert — dokumentiert im Audit unten).
 3. Tippfehler außerhalb der Produkttexte korrigiert („Anwenungen", „Reparatursevice",
    „herrvorragende", „Zertfizierung", „Hydraulikzylindenrn", „Zerspanungsmechniker").
 4. **Datenschutzerklärung neu gefasst**: Die Vorlage beschrieb Google Analytics, Cookies und
@@ -94,11 +94,22 @@ Vollständig geprüft am Stand des letzten Commits:
 
 ## Header-Banner & Suche (Nachtrag)
 
-- **Original-Headerbilder** der Vorlage (per Media-API gefunden — die Slogans sind in die
-  Bilder eingebacken, daher tragen die Bilder die Slogans als Alt-Text): Wir über uns
-  („Tradition triff Präzision …" — „triff" ist der Original-Stand), Produkte (auf Übersicht +
-  allen 16 Produktseiten), Branchen, Services, Karriere, Kontakt. Impressum/Datenschutz/Suche
-  nutzen den neutralen Fertigungshallen-Hero.
+- **Original-Headerbilder verworfen** (Kundenwunsch — die Slogans waren ins Bild eingebacken
+  und doppelten teils die H1): Alle Seiten nutzen jetzt den einheitlichen Hero „Text links,
+  Foto rechts". Die Foto-Teile der Banner sind ohne Textfläche zugeschnitten
+  (`header-*-foto.jpg` in `src/assets`), die Original-Banner aus dem Repo entfernt.
+  Verbleib der Slogans:
+  - „Tradition trifft Präzision und Perfektion. Schon seit 1959." → Lead auf *Wir über uns*
+    (Tippfehler „triff" der Vorlage dabei korrigiert).
+  - „Bei Hydraulikzylindern macht uns keiner was vor. Höchstens nach." → Lead auf der
+    Produktübersicht.
+  - „Maschinelle Präzision und umfangreiches Know-how ermöglicht vieles." → war bereits die
+    H1 der Services-Seite (kein zweites Vorkommen mehr).
+  - „Unsere umfangreiche Expertise trifft auf unterschiedlichste Anwendungen." und
+    „Hydraulikzylinder von Staudt? Perfekt. Rufen Sie an: …" → entfallen (inhaltlich durch
+    Intro bzw. Kontaktangaben der jeweiligen Seite abgedeckt).
+  - Services-Hero nutzt `zylinderteile.jpg` statt des Banner-Fotos (das Motiv „Mitarbeiter
+    an CNC-Maschine" kommt weiter unten auf der Seite bereits vor).
 - **Volltextsuche** unter `/suche/` mit Pagefind: Index entsteht bei `npm run build` in
   `dist/pagefind/` — komplett lokal, keine externen Dienste, keine Cookies (Datenschutz
   unverändert). Indexiert wird nur der Seiteninhalt (`data-pagefind-body` auf `<main>`).

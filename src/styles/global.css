@@ -130,7 +130,7 @@ a {
 
 .eyebrow {
   font-size: var(--step-eyebrow);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--steel);

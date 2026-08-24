@@ -108,8 +108,8 @@ const description =
               <Image
                 src={icons[v.icon]!}
                 alt=""
-                widths={[96, 150]}
-                sizes="76px"
+                widths={[120, 184]}
+                sizes="92px"
                 loading="lazy"
                 quality={85}
                 class="vorteil__icon"
@@ -247,8 +247,8 @@ const description =
               <Image
                 src={icons[s.icon]!}
                 alt=""
-                widths={[96, 150]}
-                sizes="64px"
+                widths={[100, 160]}
+                sizes="80px"
                 loading="lazy"
                 quality={85}
                 class="service__icon"
@@ -258,30 +258,32 @@ const description =
             </div>
           ))
         }
-        <a
-          class="service service--broschuere"
-          href="https://www.flipsnack.com/679AE87A9F7/staudt-hydraulik-broschu-re"
-          rel="noopener"
-          target="_blank"
-          data-reveal
-        >
-          <Image
-            src={broschuereBild}
-            alt="Titelseite der Staudt-Hydraulik-Broschüre"
-            widths={[300, 460]}
-            sizes="(min-width: 48rem) 20vw, 60vw"
-            loading="lazy"
-            quality={80}
-            class="service__cover"
-          />
+      </div>
+      <a
+        class="broschuere-band"
+        href="https://www.flipsnack.com/679AE87A9F7/staudt-hydraulik-broschu-re"
+        rel="noopener"
+        target="_blank"
+        data-reveal
+      >
+        <Image
+          src={broschuereBild}
+          alt="Titelseite der Staudt-Hydraulik-Broschüre"
+          widths={[220, 400]}
+          sizes="(min-width: 48rem) 190px, 55vw"
+          loading="lazy"
+          quality={80}
+          class="broschuere-band__cover"
+        />
+        <div class="broschuere-band__body">
           <h3>{broschuere.titel}</h3>
           <p>{broschuere.text}</p>
           <span class="service__more">
             Hier ansehen
             <Icon name="ArrowUpRight" size={16} />
           </span>
-        </a>
-      </div>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -328,7 +330,7 @@ const description =
     flex-wrap: wrap;
     gap: var(--space-sm) var(--space-md);
     font-size: var(--step-small);
-    font-weight: 600;
+    font-weight: 500;
     color: var(--soft);
   }
 
@@ -407,8 +409,8 @@ const description =
   }
 
   .vorteil :global(.vorteil__icon) {
-    width: 76px;
-    height: 76px;
+    width: 92px;
+    height: 92px;
     margin-bottom: var(--space-xs);
   }
 
@@ -663,8 +665,8 @@ const description =
   }
 
   .service :global(.service__icon) {
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     margin-bottom: var(--space-xs);
   }
 
@@ -673,18 +675,37 @@ const description =
     font-size: var(--step-small);
   }
 
-  .service--broschuere {
+  /* Broschüre: liegende Karte unter dem Service-Raster */
+  .broschuere-band {
+    margin-top: var(--space-md);
+    display: grid;
+    gap: var(--space-md);
+    justify-items: start;
+    align-items: center;
     background: #fff;
     border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-soft);
+    text-decoration: none;
+  }
+
+  .broschuere-band :global(.broschuere-band__cover) {
+    width: 100%;
+    max-width: 190px;
+    border-radius: var(--radius-sm);
     box-shadow: var(--shadow-soft);
   }
 
-  .service :global(.service__cover) {
-    width: 100%;
-    max-width: 220px;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-soft);
-    margin-bottom: var(--space-xs);
+  .broschuere-band__body {
+    display: grid;
+    gap: var(--space-xs);
+    justify-items: start;
+  }
+
+  .broschuere-band__body p {
+    color: var(--soft);
+    max-width: 62ch;
   }
 
   .service__more {
@@ -698,11 +719,11 @@ const description =
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .service--broschuere {
+    .broschuere-band {
       transition: box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease);
     }
 
-    .service--broschuere:hover {
+    .broschuere-band:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-lift);
     }
@@ -713,14 +734,16 @@ const description =
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .service--broschuere {
-      grid-row: span 2;
+    .broschuere-band {
+      grid-template-columns: auto 1fr;
+      gap: var(--space-xl);
+      padding-inline: var(--space-xl);
     }
   }
 
   @media (min-width: 64rem) {
     .services {
-      grid-template-columns: repeat(2, 1fr) 1.1fr;
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

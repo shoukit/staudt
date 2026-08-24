@@ -31,8 +31,8 @@ const description =
   <PageHero
     eyebrow={servicesSeite.eyebrow}
     titel={servicesSeite.h1}
-    banner="header-service"
-    bannerAlt="Maschinelle Präzision und umfangreiches Know-How ermöglicht vieles."
+    bild="zylinderteile"
+    bildAlt="Gedrehte und verchromte Zylinderteile aus der Fertigung"
   />
 
   <section class="band">
@@ -53,8 +53,8 @@ const description =
         <Image
           src={iconReparatur}
           alt=""
-          widths={[96, 150]}
-          sizes="72px"
+          widths={[120, 176]}
+          sizes="88px"
           loading="lazy"
           quality={85}
           class="reparatur__icon"
@@ -74,8 +74,8 @@ const description =
               <Image
                 src={icons[s.icon]!}
                 alt=""
-                widths={[96, 150]}
-                sizes="64px"
+                widths={[100, 160]}
+                sizes="80px"
                 loading="lazy"
                 quality={85}
                 class="service__icon"
@@ -118,8 +118,8 @@ const description =
   }
 
   .reparatur :global(.reparatur__icon) {
-    width: 72px;
-    height: 72px;
+    width: 88px;
+    height: 88px;
   }
 
   .reparatur__copy p {
@@ -153,8 +153,8 @@ const description =
   }
 
   .service :global(.service__icon) {
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     margin-bottom: var(--space-xs);
   }
 
