@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist && rm -rf public/pagefind && cp -R dist/pagefind public/pagefind",
     "preview": "astro preview",
     "check": "astro check"
   },
