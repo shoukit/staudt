@@ -15,17 +15,11 @@ const isCurrent = (href: string) =>
 ---
 
 <header class="site-header">
+  {/* Kundenwunsch: Kontakt-Button links, Logo rechts. */}
   <div class="shell site-header__inner">
-    <a class="wordmark" href="/">
-      <Image
-        src={logo}
-        alt={`${site.name} – ${site.claim}`}
-        widths={[180, 360]}
-        sizes="180px"
-        loading="eager"
-        quality={90}
-        class="wordmark__img"
-      />
+    <a class="btn btn--primary site-header__cta" href="/kontakt/">
+      <Icon name="Mail" size={17} />
+      <span>Kontakt</span>
     </a>
 
     <button
@@ -56,15 +50,22 @@ const isCurrent = (href: string) =>
       </ul>
     </nav>
 
-    <a class="btn btn--primary site-header__cta" href={contact.emailHref}>
-      <Icon name="Mail" size={17} />
-      <span>Anfragen</span>
+    <a class="wordmark" href="/">
+      <Image
+        src={logo}
+        alt={`${site.name} – ${site.claim} – zur Startseite`}
+        widths={[180, 360]}
+        sizes="180px"
+        loading="eager"
+        quality={90}
+        class="wordmark__img"
+      />
     </a>
   </div>
 </header>
 
 <script>
-  const BREAKPOINT = window.matchMedia('(min-width: 64rem)');
+  const BREAKPOINT = window.matchMedia('(min-width: 74rem)');
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = header?.querySelector<HTMLButtonElement>('.nav-toggle');
   const label = toggle?.querySelector<HTMLElement>('.nav-toggle__label');
@@ -131,7 +132,7 @@ const isCurrent = (href: string) =>
 
   .site-header__inner {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto auto 1fr;
     align-items: center;
     gap: var(--space-sm) var(--space-md);
     padding-block: var(--space-xs);
@@ -141,10 +142,11 @@ const isCurrent = (href: string) =>
     display: flex;
     align-items: center;
     min-height: var(--tap);
+    justify-self: end;
   }
 
   .wordmark :global(.wordmark__img) {
-    width: 180px;
+    width: 170px;
     height: auto;
   }
 
@@ -212,6 +214,7 @@ const isCurrent = (href: string) =>
     font-weight: 600;
     text-decoration: none;
     color: var(--soft);
+    white-space: nowrap;
   }
 
   .site-nav a:hover,
@@ -236,10 +239,10 @@ const isCurrent = (href: string) =>
     }
   }
 
-  @media (min-width: 64rem) {
+  @media (min-width: 74rem) {
     .site-header__inner {
       grid-template-columns: auto 1fr auto;
-      gap: var(--space-lg);
+      gap: var(--space-md);
     }
 
     .nav-toggle {
@@ -253,6 +256,7 @@ const isCurrent = (href: string) =>
       margin-top: 0;
       padding-block: 0;
       justify-self: center;
+      min-width: 0;
     }
 
     .site-nav ul {
@@ -266,7 +270,8 @@ const isCurrent = (href: string) =>
     .site-nav a {
       width: auto;
       min-height: 38px;
-      padding: 0 1rem;
+      padding: 0 0.75rem;
+      font-size: 0.875rem;
       border-radius: var(--radius-pill);
     }
 

@@ -1,0 +1,249 @@
+---
+/**
+ * Karriere — Stellen, Benefits und Ausbildung 1:1 der Vorlage.
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import KontaktBand from '../components/KontaktBand.astro';
+import { contact, karriere } from '../data/site';
+
+import drehenAussen from '../assets/drehen-aussen.jpg';
+
+const title = 'Karriere – Staudt Hydraulik';
+const description =
+  'Karriere bei Staudt Hydraulik in Geilenkirchen: offene Stellen für Zerspanungsmechaniker, Industriemechaniker, Schweißfachkräfte und mehr — plus Ausbildungsplätze.';
+
+const bewerbungMailto = (stelle: string) =>
+  `${contact.emailHref}?subject=${encodeURIComponent(`Bewerbung: ${stelle}`)}`;
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell page-hero__grid">
+      <div class="page-hero__copy">
+        <p class="eyebrow">Karriere</p>
+        <h1>{karriere.h1}</h1>
+        <ul class="stellen">
+          {
+            karriere.stellen.map((s) => (
+              <li>
+                <a href={bewerbungMailto(s)}>
+                  {s}
+                  <Icon name="ArrowUpRight" size={15} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <figure class="page-hero__figure">
+        <Image
+          src={drehenAussen}
+          alt="Außendrehen eines Zylinderrohrs in der Fertigung"
+          widths={[480, 720, 980]}
+          sizes="(min-width: 60rem) 44vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={82}
+          class="page-hero__img"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell bieten">
+      <div class="prose" data-reveal>
+        <h2>{karriere.bietenTitel}</h2>
+        <p>{karriere.bietenIntro}</p>
+        <ul class="bieten__liste">
+          {
+            karriere.bieten.map((b) => (
+              <li>
+                <Icon name="Check" size={16} />
+                <span>{b}</span>
+              </li>
+            ))
+          }
+        </ul>
+        {karriere.abschluss.map((a) => <p>{a}</p>)}
+      </div>
+
+      <aside class="ausbildung" data-reveal>
+        <h2>{karriere.ausbildungTitel}</h2>
+        <ul>
+          {
+            karriere.ausbildung.map((a) => (
+              <li>
+                <a href={bewerbungMailto(a)}>
+                  {a}
+                  <Icon name="ArrowUpRight" size={15} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="btn btn--primary" href={bewerbungMailto('Initiativbewerbung')}>
+          <Icon name="Mail" size={17} />
+          Jetzt bewerben
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <KontaktBand />
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .page-hero__copy {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .page-hero__figure {
+    margin: 0;
+  }
+
+  .page-hero :global(.page-hero__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .stellen {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .stellen a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-height: var(--tap);
+    padding: 0.5rem var(--space-md);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--slate);
+    text-decoration: none;
+  }
+
+  .stellen a:hover {
+    border-color: var(--steel);
+    color: var(--steel);
+  }
+
+  .stellen :global(svg) {
+    color: var(--steel);
+    flex: none;
+  }
+
+  @media (min-width: 60rem) {
+    .page-hero__grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+
+  .bieten {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .bieten__liste {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .bieten__liste li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-xs);
+    align-items: start;
+    font-size: var(--step-small);
+    color: var(--soft);
+  }
+
+  .bieten__liste :global(svg) {
+    color: var(--steel);
+    margin-top: 0.2em;
+  }
+
+  .ausbildung {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: var(--space-lg);
+    display: grid;
+    gap: var(--space-md);
+    justify-items: start;
+  }
+
+  .ausbildung h2 {
+    font-size: 1.25rem;
+  }
+
+  .ausbildung ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+    width: 100%;
+  }
+
+  .ausbildung ul a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-height: var(--tap);
+    padding: 0.5rem var(--space-md);
+    background: var(--wash);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--slate);
+    text-decoration: none;
+  }
+
+  .ausbildung ul a:hover {
+    color: var(--steel);
+  }
+
+  @media (min-width: 60rem) {
+    .bieten {
+      grid-template-columns: 1.3fr 0.8fr;
+    }
+
+    .ausbildung {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+</style>

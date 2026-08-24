@@ -1,0 +1,200 @@
+---
+/**
+ * Hydraulikzylinder-Übersicht: die nummerierte Liste der Vorlage als
+ * Kartenraster mit Produktfotos. Nr. 15 (Eilgangszylinder) ist auf der
+ * Vorlage ein toter Link — hier ohne Link gelistet.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import KontaktBand from '../components/KontaktBand.astro';
+import { fehlendeProdukte, produkte } from '../data/produkte';
+
+const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+
+const bild = (name: string): ImageMetadata => {
+  for (const [pfad, mod] of Object.entries(alleBilder)) {
+    const basis = pfad.split('/').pop()!.replace(/\.(jpg|jpeg|png)$/, '');
+    if (basis === name) return mod.default;
+  }
+  throw new Error(`Bild "${name}" nicht in src/assets gefunden`);
+};
+
+const title = 'Hydraulikzylinder – Staudt Hydraulik';
+const description =
+  'Alle Hydraulikzylinder von Staudt Hydraulik im Überblick: einfachwirkend, Gleichgang-, Serien-, Groß-, Klein-, Hohlkolben-, Norm-, Teleskop-, ATEX-, Kaskaden-, Sonder- und Edelstahlzylinder, elektro-hydraulische Einheiten, Prüf-, Pneumatik- und Zugankerzylinder.';
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell">
+      <p class="eyebrow">Produkte</p>
+      <h1>Hydraulikzylinder</h1>
+      <p class="lead">
+        Referenzprodukte aus unserer Fertigung — von der Serie bis zur Sonderkonstruktion.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell">
+      <ul class="grid">
+        {
+          produkte.map((p) => (
+            <li data-reveal>
+              <a class="card" href={`/${p.slug}/`}>
+                <Image
+                  src={bild(p.foto)}
+                  alt={p.fotoAlt}
+                  widths={[380, 560]}
+                  sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 44vw, 90vw"
+                  loading="lazy"
+                  quality={80}
+                  class="card__img"
+                />
+                <span class="card__body">
+                  <span class="card__nr">{p.nr}</span>
+                  <span class="card__title">{p.navTitel}</span>
+                  <span class="card__more">
+                    Zum Produkt
+                    <Icon name="ArrowRight" size={15} />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+        {
+          fehlendeProdukte.map((p) => (
+            <li class="card card--platzhalter" data-reveal>
+              <span class="card__body">
+                <span class="card__nr">{p.nr}</span>
+                <span class="card__title">{p.titel}</span>
+                <span class="card__note">Seite folgt</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <KontaktBand />
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero .shell {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .card {
+    display: grid;
+    height: 100%;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .card :global(.card__img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #fff;
+  }
+
+  .card__body {
+    display: grid;
+    gap: 0.2rem;
+    padding: var(--space-md) var(--space-md) var(--space-lg);
+    align-content: start;
+  }
+
+  .card__nr {
+    font-size: var(--step-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    color: var(--steel);
+  }
+
+  .card__title {
+    font-weight: 650;
+    font-size: 1.0625rem;
+    color: var(--slate);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .card__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    margin-top: var(--space-xs);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--steel);
+  }
+
+  .card__note {
+    margin-top: var(--space-xs);
+    font-size: var(--step-small);
+    color: var(--soft);
+  }
+
+  .card--platzhalter {
+    border: 1px dashed var(--line-strong);
+    background: transparent;
+    box-shadow: none;
+    align-content: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a.card {
+      transition: box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease);
+    }
+
+    a.card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lift);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 74rem) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

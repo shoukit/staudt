@@ -27,8 +27,11 @@ export const contact = {
 export const nav = [
   { href: '/', label: 'Start' },
   { href: '/wir-ueber-uns-2/', label: 'Wir über uns' },
-  { href: '/01-einfachwirkende-hydraulikzylinder/', label: 'Einfachwirkende Zylinder' },
-  { href: '/08-teleskopzylinder/', label: 'Teleskopzylinder' },
+  { href: '/hydraulikzylinder/', label: 'Hydraulikzylinder' },
+  { href: '/branchen-referenzen/', label: 'Branchen & Referenzen' },
+  { href: '/services/', label: 'Services' },
+  { href: '/karriere/', label: 'Karriere' },
+  { href: '/kontakt/', label: 'Kontakt' },
 ] as const;
 
 /** Startseite — Vorteile („Vertrauen & Qualität"). */
@@ -143,6 +146,129 @@ export const broschuere = {
 export const kontaktBand = {
   titel: 'Sprechen Sie mit uns',
   text: 'Sie haben ein Projekt oder eine technische Anfrage? Unser Team freut sich auf Ihre Nachricht.',
+} as const;
+
+/** Branchen & Referenzen (eigene Seite), 1:1 übernommen. */
+export const branchenReferenzen = {
+  h1: 'Branchen & Referenzen',
+  intro:
+    'Namhafte Unternehmen mit ihren unterschiedlichsten Anforderungen gehören seit langer Zeit zu unseren Kunden. Kein Einsatzgebiet und kein atmosphärischer Bereich sind uns fremd, keine Stückzahl zu klein oder groß und kein rotationssymmetrisches Zylinder zu lang oder schwer. Hier ein Auszug aus den unterschiedlichsten Branchen, die wir mit präzisen und oft komplizierten Hydraulikzylindern für die unterschiedlichsten Kunden bedienen:',
+  kacheln: [
+    { titel: 'Photovoltaik', bild: 'branche-photovoltaik' },
+    { titel: 'On- & Offshore', bild: 'branche-offshore' },
+    { titel: 'Wasserkraft', bild: 'branche-wasserkraft' },
+    { titel: 'Pressen', bild: 'branche-pressen' },
+    { titel: 'Arbeitsbühnen', bild: 'branche-arbeitsbuehnen' },
+  ],
+} as const;
+
+/** Services-Seite, 1:1 übernommen. */
+export const servicesSeite = {
+  h1: 'Maschinelle Präzision und umfangreiches Know-how ermöglicht vieles.',
+  eyebrow: 'Unsere Services',
+  reparatur: {
+    titel: 'Reparaturservice',
+    text: 'Umfassender Reparaturservice für Standardzylinder und Sonderzylinder aller Fabrikate. Sonderzylinder und Standardzylinder auf höchstem Niveau.',
+  },
+  weitere: [
+    {
+      titel: 'Gepflegtes Ersatzteile-Archiv',
+      text: 'Durch ein hervorragend organisiertes und gepflegtes Archiv können wir rückwirkend alle Ersatzteile bereitstellen.',
+      icon: 'icon-archiv',
+    },
+    {
+      titel: 'Neukonstruktion',
+      text: 'Gerne setzen wir auch die Modifizierung und Optimierung Ihrer Hydraulikzylinder um.',
+      icon: 'icon-neukonstruktion',
+    },
+    {
+      titel: 'Abhol- und Anlieferservice',
+      text: 'Integrierter Abhol- und Anlieferservice, um die Durchlaufzeiten im Reparaturfall möglichst kurz zu halten.',
+      icon: 'icon-lieferservice',
+    },
+  ],
+} as const;
+
+/** Karriere-Seite, 1:1 übernommen. */
+export const karriere = {
+  h1: 'Wir suchen',
+  stellen: [
+    'Zerspanungsmechaniker/in: Fachrichtung Drehtechnik m/w/d',
+    'Industriemechaniker/in m/w/d',
+    'Betriebshelfer/in und Fahrer/in m/w/d',
+    'Lager- und Logistikmitarbeiter/in m/w/d',
+    'Schweißfachkraft m/w/d',
+    'Initiativbewerber',
+  ],
+  bietenTitel: 'Was wir bieten',
+  bietenIntro:
+    'Wir bieten Ihnen ein attraktives Arbeitsumfeld in einem technisch anspruchsvollen Gebiet und leistungsgerechte Vergütung.',
+  bieten: [
+    'Einen sicheren Arbeitsplatz mit Zukunftsperspektive',
+    'Moderner Maschinenpark',
+    'Offene Unternehmenskultur und flache Hierarchien',
+    'Leistungsgerechtes Einkommen',
+    'Urlaubs- & Weihnachtsgeld',
+    'Stetige Aus- und Weiterbildungsmöglichkeiten',
+    'Bei gesteigertem Interesse an der Durchführung von Schweißarbeiten, übernehmen wir die Ausbildung zum geprüften Schweißfacharbeiter',
+    'Firmenevents und Veranstaltungen',
+    '30 Tage Urlaub',
+  ],
+  abschluss: [
+    'Zögern Sie nicht uns Ihre Bewerbung zukommen zu lassen.',
+    'Vertraulichkeit ist für uns selbstverständlich.',
+    'Nichts passendes dabei? Bewerben Sie sich initiativ!',
+  ],
+  ausbildungTitel: 'Ausbildung',
+  ausbildung: [
+    'Auszubildende/r zum Zerspanungsmechaniker/in m/w/d',
+    'Auszubildende/r zum Feinwerkmechaniker/in m/w/d',
+  ],
+} as const;
+
+/** Kontakt-Seite: Ansprechpartner 1:1 (inkl. der E-Mail-Angaben der Vorlage —
+ *  Cohnen steht dort mit thomas.staudt@…, siehe docs/uebergabe.md). */
+export const ansprechpartner = [
+  {
+    name: 'Thomas Staudt B. Eng.',
+    rollen: ['Geschäftsführender Gesellschafter', 'Konstruktionsleiter'],
+    email: 'thomas.staudt@staudt-hydraulik.de',
+    foto: 'team-staudt',
+  },
+  {
+    name: 'Heinz-Josef Cohnen',
+    rollen: ['Technischer Geschäftsführer', 'Vertrieb'],
+    email: 'thomas.staudt@staudt-hydraulik.de',
+    foto: 'team-cohnen',
+  },
+  {
+    name: 'Carsten Steigenberger',
+    rollen: ['Auftragsmanagement', 'Einkauf'],
+    email: 'steigenberger@staudt-hydraulik.de',
+    foto: 'team-steigenberger',
+  },
+  {
+    name: 'Sascha Benzing',
+    rollen: ['Konstruktion'],
+    email: 'benzing@staudt-hydraulik.de',
+    foto: 'team-benzing',
+  },
+] as const;
+
+export const kontaktSeite = {
+  intro:
+    'Staudt-Hydraulik ist Ihr kompetenter Ansprechpartner rund um das Thema Hydraulikzylinder. Besonders wichtig ist uns die Zufriedenheit unserer Kunden. Wir stellen nicht nur den höchsten Anspruch an die Qualität unserer Fabrikate, sondern auch an unseren Service. Aus diesem Grund betrachten wir eine umfassende und ganzheitliche Beratung unserer Kunden als Selbstverständlichkeit. Dies gilt auch für eine detaillierte Dokumentation unserer Aufträge. Zusatzleistungen wie Lackierung, Konservierung, Verpackung und Frachtlogistik runden unseren Service ab.',
+  zylindertypen: [
+    'Standardzylinder',
+    'Sonderkonstruktion',
+    'Teleskopzylinder',
+    'Hohlkolbenzylinder',
+    'Gleichgangszylinder',
+    'ATEX-Zylinder',
+    'Edelstahlzylinder',
+    'Elektro-hydraulische Einheit',
+    'Ich bin noch unsicher',
+  ],
 } as const;
 
 /** Wir über uns, 1:1 übernommen. */

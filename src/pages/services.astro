@@ -1,0 +1,190 @@
+---
+/**
+ * Services — Texte 1:1 der Vorlage: Reparaturservice groß mit Foto,
+ * drei weitere Services mit den Original-Icons.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import KontaktBand from '../components/KontaktBand.astro';
+import { servicesSeite } from '../data/site';
+
+import cncDisplay from '../assets/cnc-display.jpg';
+import iconReparatur from '../assets/icon-reparatur.png';
+import iconArchiv from '../assets/icon-archiv.png';
+import iconNeukonstruktion from '../assets/icon-neukonstruktion.png';
+import iconLieferservice from '../assets/icon-lieferservice.png';
+
+const icons: Record<string, ImageMetadata> = {
+  'icon-archiv': iconArchiv,
+  'icon-neukonstruktion': iconNeukonstruktion,
+  'icon-lieferservice': iconLieferservice,
+};
+
+const title = 'Services – Staudt Hydraulik';
+const description =
+  'Die Services von Staudt Hydraulik: Reparaturservice für Zylinder aller Fabrikate, gepflegtes Ersatzteile-Archiv, Neukonstruktion sowie Abhol- und Anlieferservice.';
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell">
+      <p class="eyebrow">{servicesSeite.eyebrow}</p>
+      <h1>{servicesSeite.h1}</h1>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell reparatur">
+      <figure class="reparatur__figure" data-reveal>
+        <Image
+          src={cncDisplay}
+          alt="Bediener an der Steuerung einer modernen CNC-Maschine"
+          widths={[480, 720, 980]}
+          sizes="(min-width: 60rem) 46vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={82}
+          class="reparatur__img"
+        />
+      </figure>
+      <div class="reparatur__copy">
+        <Image
+          src={iconReparatur}
+          alt=""
+          widths={[96, 150]}
+          sizes="72px"
+          loading="lazy"
+          quality={85}
+          class="reparatur__icon"
+        />
+        <h2>{servicesSeite.reparatur.titel}</h2>
+        <p>{servicesSeite.reparatur.text}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell">
+      <ul class="services">
+        {
+          servicesSeite.weitere.map((s) => (
+            <li class="service" data-reveal>
+              <Image
+                src={icons[s.icon]!}
+                alt=""
+                widths={[96, 150]}
+                sizes="64px"
+                loading="lazy"
+                quality={85}
+                class="service__icon"
+              />
+              <h2>{s.titel}</h2>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <KontaktBand />
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero .shell {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .page-hero h1 {
+    max-width: 24ch;
+  }
+
+  .reparatur {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .reparatur__figure {
+    margin: 0;
+  }
+
+  .reparatur :global(.reparatur__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .reparatur__copy {
+    display: grid;
+    gap: var(--space-sm);
+    justify-items: start;
+  }
+
+  .reparatur :global(.reparatur__icon) {
+    width: 72px;
+    height: 72px;
+  }
+
+  .reparatur__copy p {
+    color: var(--soft);
+    max-width: 48ch;
+  }
+
+  @media (min-width: 60rem) {
+    .reparatur {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .services {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .service {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: var(--space-lg);
+    display: grid;
+    gap: var(--space-xs);
+    justify-items: start;
+    align-content: start;
+  }
+
+  .service :global(.service__icon) {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--space-xs);
+  }
+
+  .service h2 {
+    font-size: 1.25rem;
+  }
+
+  .service p {
+    color: var(--soft);
+    font-size: var(--step-small);
+  }
+
+  @media (min-width: 48rem) {
+    .services {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

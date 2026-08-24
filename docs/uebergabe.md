@@ -1,54 +1,75 @@
-# Übergabe — Staudt Hydraulik (erste Runde)
+# Übergabe — Staudt Hydraulik
 
-## Umfang dieser Runde
+## Umfang (Stand: alle deutschen Seiten)
 
-Neu gebaut als statische Astro-Site, Texte und Bilder 1:1 von der Vorlage
+Statische Astro-Site, Slugs identisch zur Vorlage
 (wordpress-1074446-6581904.cloudwaysapps.com):
 
-- `/` — Landingpage (alle Sektionen der Vorlage)
-- `/wir-ueber-uns-2/` — Wer wir sind, Entwicklung & Konstruktion, nach Maß, Historie
-- `/01-einfachwirkende-hydraulikzylinder/` — Kurzhub-Plungerzylinder
-- `/08-teleskopzylinder/` — 3-stufiger doppeltwirkender Teleskopzylinder
-- `/impressum/` + 404
+- `/` Landingpage · `/wir-ueber-uns-2/` · `/hydraulikzylinder/` (Übersicht)
+- **16 Produkt-Detailseiten** (01–14, 16, 17 — an den Original-Slugs, inkl.
+  `/gleichgangzylinder/` und `/sonderzylinder/` ohne Nummernpräfix wie im Original)
+- `/branchen-referenzen/` · `/services/` · `/karriere/` · `/kontakt/`
+- `/impressum/` · `/datenschutz/` · 404
 
-Noch nicht gebaut (Vorlage hat sie): übrige 14 Zylinder-Detailseiten, `/hydraulikzylinder/`
-(Übersicht), Branchen & Referenzen, Services, Karriere, Kontakt, Datenschutz, EN-Version.
-Die Struktur (Daten in `src/data/produkte.ts`, Template `src/pages/[...slug].astro`) ist so
-angelegt, dass weitere Zylinderseiten nur ein Datenobjekt brauchen.
+Nicht übernommen: EN-Version (auf Wunsch nachrüstbar).
 
-## Bewusste Design-Verbesserungen (Texte unverändert)
+## Header
 
-1. **Hierarchie repariert**: Die Vorlage hatte die H1 mitten auf der Seite und mischte
-   H1/H2/H3 wild (SEO/A11y-Problem). Jetzt: genau eine H1 pro Seite, Hero zuerst.
-2. **Technische Daten als echte Tabellen** statt loser Textzeilen (Teleskopzylinder mit
-   Stufen-Gruppen).
-3. **Ein CTA-System**: „Anfragen"/Kontakt als primäre Aktion, konsistent auf jeder Seite;
-   das tote WordPress-Formular („Your Name / Last Name") ist durch direkte Wege ersetzt
-   (mailto mit vorbefülltem Betreff, Telefon).
-4. **Tippfehler der Vorlage korrigiert**: „Branchen & Anwenungen" → Anwendungen,
-   „Reparatursevice" → Reparaturservice, „herrvorragende" → hervorragende, „Zertfizierung" →
-   Zertifizierung (nur Rechtschreibung, keine inhaltliche Änderung).
-5. **Performance**: Die Vorlage lud ~177 Assets (Elementor/jQuery/4 Font-Familien).
-   Die neue Seite: statisches HTML, eine Font-Familie (Poppins, selbst gehostet),
-   Astro-optimierte Bilder (WebP, responsive), kein externes Tracking.
-6. Historie: die Timeline-Grafik der Vorlage ist als Bild übernommen (auf Mobil horizontal
-   scrollbar). Wenn gewünscht, bauen wir sie als echte HTML-Timeline nach — dann auch für
-   Screenreader lesbar.
+Kundenwunsch umgesetzt: **Kontakt-Button links, Logo rechts**, Navigation mittig.
+Unter 1184 px klappt die Navigation hinter den Menü-Button (ohne JavaScript bleibt sie offen).
+
+## 1:1-Garantie der Produktseiten
+
+Beschreibungen und technische Daten sind **wörtlich von der Vorlage übernommen** — inklusive
+dieser Eigenheiten, die die Firma bewusst prüfen/korrigieren sollte:
+
+- **16 Pneumatikzylinder**: Beschreibung „Beschreibung", Specs „XX mm / 1XX mm / XX bar / XX kN
+  / XX kg" — auf der Vorlage Platzhalter, hier 1:1 übernommen.
+- **17 Zugankerzylinder**: Beschreibung „Platzhalter" — dito. (Die Grafik der Vorlage heißt
+  dort „Eilgangszlinder_Grafik.png" — möglicherweise falsch zugeordnet.)
+- **14 Prüfzylinder**: Überschrift „Püfzylinder mit Membranspeicher" — Tippfehler der Vorlage,
+  1:1 belassen.
+- **11 Sonderzylinder**: „Zugkraft: 775 kg" — Einheit kg statt kN wie auf der Vorlage.
+- **15 Eilgangszylinder**: Der Navigationspunkt der Vorlage führt dort auf eine 404-Seite.
+  In der Übersicht als „Seite folgt" gelistet; sobald Inhalte vorliegen, ist es ein
+  Datenobjekt in `src/data/produkte.ts`.
+
+## Kontaktseite
+
+- Ansprechpartner 1:1 — **Achtung**: Heinz-Josef Cohnen steht auf der Vorlage mit
+  `thomas.staudt@staudt-hydraulik.de` (vermutlich Copy-Paste-Fehler; Dateiname des Fotos
+  deutet auf `cohnen@…`). 1:1 übernommen — bitte korrigieren lassen, dann in
+  `src/data/site.ts` ändern.
+- Das WP-Formular ist als **mailto-Komponist** umgesetzt: Zylindertyp-Auswahl (Optionen 1:1),
+  Name, Nachricht → öffnet das E-Mail-Programm vorbefüllt. Keine Datenübertragung über die
+  Website, kein Consent-Problem. Ohne JavaScript: direkter E-Mail-Link.
+
+## Bewusste Änderungen (außerhalb der Produkttexte)
+
+1. Hierarchie: eine H1 pro Seite (Vorlage hatte 3× H2 pro Produktseite, H1 mitten auf der
+   Startseite).
+2. Technische Daten als echte Tabellen; technische Zeichnungen als Band (schwarz für helle
+   Linienzeichnungen, hell für dunkle).
+3. Tippfehler außerhalb der Produkttexte korrigiert („Anwenungen", „Reparatursevice",
+   „herrvorragende", „Zertfizierung", „Hydraulikzylindenrn", „Zerspanungsmechniker").
+4. **Datenschutzerklärung neu gefasst**: Die Vorlage beschrieb Google Analytics, Cookies und
+   eingebettetes Maps — nichts davon existiert auf der statischen Seite (keine Cookies, kein
+   Tracking, selbst gehostete Schriften). **Anwaltlich prüfen lassen.**
+5. Impressum: Kerndaten + Haftungstexte übernommen, WordPress-spezifische Passagen entfernt.
+6. Performance: statisches HTML statt ~177 Elementor-Assets; eine Schriftfamilie (Poppins,
+   selbst gehostet); responsive WebP-Bilder.
 
 ## Offene Punkte
 
-- **Datenschutzerklärung fehlt** noch (Vorlage-Text ist WordPress-spezifisch; muss an die
-  statische Technik angepasst werden wie bei den Schwesterprojekten).
-- **AGB-PDF** liegt auf der Live-Domain (staudt-hydraulik.de/wp-content/…) — beim Livegang
-  mit übernehmen und im Footer verlinken.
+- AGB-PDF liegt noch auf der Live-Domain (Footer verlinkt dorthin) — beim Livegang die Datei
+  mit umziehen.
 - Broschüre verlinkt auf Flipsnack (extern, wie Vorlage).
-- EN-Version der Vorlage nicht übernommen.
-- Kontaktformular: bewusst durch mailto/Telefon ersetzt (statische Seite). Wenn ein echtes
-  Formular gewünscht ist: Formular-Dienst nachrüsten + Datenschutzerklärung erweitern.
+- Karriere: Bewerbungen laufen über mailto mit vorbefülltem Betreff pro Stelle.
 
 ## Technisch
 
-- `npm run dev` lokal, `npm run build` → `dist/` (committet, direkt per FTP hochladbar).
-- Slugs identisch zur Vorlage — die gebauten Seiten können ihre WP-Pendants 1:1 ersetzen.
-- Farben aus dem Elementor-CSS der Vorlage: #0F5BA3, #264152, #1863DC, #F3F5F7.
-  Kontraste berechnet, alle Textpaare ≥ 4.5:1.
+- `npm run dev` lokal · `npm run build` → `dist/` (committet, FTP-fertig).
+- Neue Produktseite anlegen: ein Objekt in `src/data/produkte.ts` + Grafik/Foto in
+  `src/assets/` — fertig.
+- Farben aus dem Elementor-CSS der Vorlage (#0F5BA3, #264152, #1863DC, #F3F5F7),
+  Kontraste berechnet ≥ 4.5:1 für Text.

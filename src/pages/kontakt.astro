@@ -1,0 +1,318 @@
+---
+/**
+ * Kontakt: Intro und Ansprechpartner 1:1 der Vorlage (inkl. E-Mail-Angaben,
+ * siehe docs/uebergabe.md). Das WP-Formular ist als progressiver
+ * mailto-Komponist umgesetzt: ohne JavaScript bleibt der direkte
+ * E-Mail-Weg, mit JavaScript wird die Nachricht vorbefüllt.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { ansprechpartner, contact, kontaktSeite } from '../data/site';
+
+const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+
+const bild = (name: string): ImageMetadata => {
+  for (const [pfad, mod] of Object.entries(alleBilder)) {
+    const basis = pfad.split('/').pop()!.replace(/\.(jpg|jpeg|png)$/, '');
+    if (basis === name) return mod.default;
+  }
+  throw new Error(`Bild "${name}" nicht in src/assets gefunden`);
+};
+
+const title = 'Kontakt – Staudt Hydraulik, Geilenkirchen';
+const description =
+  'Kontakt zu Staudt Hydraulik: Tel. +49 2451 8037, info@staudt-hydraulik.de, Ottostraße 8, 52511 Geilenkirchen. Ihre Ansprechpartner für Konstruktion, Vertrieb und Auftragsmanagement.';
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell">
+      <p class="eyebrow">Kontakt</p>
+      <h1>Ihre Ansprechpartner</h1>
+      <p class="lead">{kontaktSeite.intro}</p>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell">
+      <ul class="team">
+        {
+          ansprechpartner.map((a) => (
+            <li class="person" data-reveal>
+              <Image
+                src={bild(a.foto)}
+                alt={`Porträt von ${a.name}`}
+                widths={[380, 560]}
+                sizes="(min-width: 60rem) 22vw, (min-width: 40rem) 44vw, 90vw"
+                loading="lazy"
+                quality={82}
+                class="person__img"
+              />
+              <div class="person__body">
+                <h2>{a.name}</h2>
+                <p class="person__rollen">
+                  {a.rollen.map((r) => (
+                    <span>{r}</span>
+                  ))}
+                </p>
+                <a class="person__mail" href={`mailto:${a.email}`}>
+                  <Icon name="Mail" size={15} />
+                  {a.email}
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell anfrage">
+      <div class="anfrage__copy" data-reveal>
+        <h2>Nehmen Sie mit uns Kontakt auf</h2>
+        <p>
+          Unser Team freut sich auf Ihre Nachricht — per Formular, telefonisch oder direkt per
+          E-Mail.
+        </p>
+        <ul class="anfrage__facts">
+          <li><Icon name="Phone" size={17} /> <a href={contact.phoneHref}>Tel. {contact.phone}</a></li>
+          <li><Icon name="Printer" size={17} /> Fax {contact.fax}</li>
+          <li><Icon name="Mail" size={17} /> <a href={contact.emailHref}>{contact.email}</a></li>
+          <li><Icon name="MapPin" size={17} /> {contact.street}, {contact.postalCode} {contact.city}</li>
+        </ul>
+      </div>
+
+      <form class="formular" id="kontaktformular" data-reveal>
+        <label class="formular__feld">
+          <span>Zylindertyp</span>
+          <select name="typ">
+            <option value="">Bitte Zylindertyp wählen</option>
+            {kontaktSeite.zylindertypen.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </label>
+        <label class="formular__feld">
+          <span>Ihr Name</span>
+          <input type="text" name="name" autocomplete="name" />
+        </label>
+        <label class="formular__feld">
+          <span>Ihre Nachricht</span>
+          <textarea name="nachricht" rows="5"></textarea>
+        </label>
+        <p class="formular__hinweis">
+          Der Versand öffnet Ihr E-Mail-Programm — es werden keine Daten über diese Webseite
+          übertragen.
+        </p>
+        <button class="btn btn--primary" type="submit">
+          <Icon name="Mail" size={17} />
+          Nachricht per E-Mail senden
+        </button>
+        <noscript>
+          <p class="formular__hinweis">
+            Bitte senden Sie Ihre Anfrage direkt an
+            <a href={contact.emailHref}>{contact.email}</a>.
+          </p>
+        </noscript>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // Progressive enhancement: baut aus den Feldern eine vorbefüllte E-Mail.
+    const form = document.getElementById('kontaktformular') as HTMLFormElement | null;
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const daten = new FormData(form);
+      const typ = String(daten.get('typ') || '');
+      const name = String(daten.get('name') || '');
+      const nachricht = String(daten.get('nachricht') || '');
+      const subject = typ ? `Anfrage: ${typ}` : 'Anfrage über die Website';
+      const body = `${nachricht}\n\n${name ? `Name: ${name}\n` : ''}${typ ? `Zylindertyp: ${typ}\n` : ''}`;
+      window.location.href = `mailto:info@staudt-hydraulik.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero .shell {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .team {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .person {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    box-shadow: var(--shadow-soft);
+    display: grid;
+  }
+
+  .person :global(.person__img) {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+    object-position: center 25%;
+  }
+
+  .person__body {
+    padding: var(--space-md) var(--space-lg) var(--space-lg);
+    display: grid;
+    gap: var(--space-2xs);
+    align-content: start;
+  }
+
+  .person__body h2 {
+    font-size: 1.125rem;
+  }
+
+  .person__rollen {
+    display: grid;
+    font-size: var(--step-small);
+    color: var(--soft);
+  }
+
+  .person__mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: var(--space-xs);
+    min-height: 32px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--steel);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .person__mail:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 40rem) {
+    .team {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .team {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .anfrage {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .anfrage__copy {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .anfrage__copy p {
+    color: var(--soft);
+    max-width: 46ch;
+  }
+
+  .anfrage__facts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+    font-size: var(--step-small);
+  }
+
+  .anfrage__facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    color: var(--soft);
+  }
+
+  .anfrage__facts :global(svg) {
+    color: var(--steel);
+    flex: none;
+  }
+
+  .anfrage__facts a {
+    color: var(--slate);
+    font-weight: 600;
+  }
+
+  .formular {
+    background: var(--wash);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: grid;
+    gap: var(--space-md);
+    justify-items: start;
+  }
+
+  .formular__feld {
+    display: grid;
+    gap: 0.3rem;
+    width: 100%;
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: var(--slate);
+  }
+
+  .formular input,
+  .formular select,
+  .formular textarea {
+    width: 100%;
+    min-height: var(--tap);
+    padding: 0.6rem 0.9rem;
+    font: inherit;
+    font-weight: 400;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  .formular textarea {
+    resize: vertical;
+  }
+
+  .formular input:focus-visible,
+  .formular select:focus-visible,
+  .formular textarea:focus-visible {
+    outline: 3px solid var(--action);
+    outline-offset: 1px;
+  }
+
+  .formular__hinweis {
+    font-size: 0.85rem;
+    color: var(--soft);
+  }
+
+  @media (min-width: 60rem) {
+    .anfrage {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+</style>

@@ -1,7 +1,8 @@
 ---
 /**
- * Produkt-Detailseiten an den Original-Slugs. Technische Daten als echte
- * Tabellen (Verbesserung ggü. der losen Textliste der Vorlage).
+ * Produkt-Detailseiten an den Original-Slugs. Beschreibungen und technische
+ * Daten wörtlich 1:1 von der Vorlage (siehe src/data/produkte.ts). Technische
+ * Zeichnung als Band: schwarz für helle Linien, hell für dunkle (grafikHell).
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
@@ -11,27 +12,30 @@ import KontaktBand from '../components/KontaktBand.astro';
 import { produkte } from '../data/produkte';
 import { contact } from '../data/site';
 
-import grafikEinfach from '../assets/einfachwirkend-grafik.png';
-import grafikTeleskop from '../assets/teleskop-grafik.png';
-import fotoPlunger from '../assets/kurzhub-plunger.jpg';
-import fotoTeleskop from '../assets/teleskopzylinder.jpg';
-
 export function getStaticPaths() {
   return produkte.map((p) => ({ params: { slug: p.slug }, props: { produkt: p } }));
 }
 
-const bilder: Record<string, ImageMetadata> = {
-  'einfachwirkend-grafik': grafikEinfach,
-  'teleskop-grafik': grafikTeleskop,
-  'kurzhub-plunger': fotoPlunger,
-  teleskopzylinder: fotoTeleskop,
+const alleBilder = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+
+const bild = (name: string): ImageMetadata => {
+  for (const [pfad, mod] of Object.entries(alleBilder)) {
+    const basis = pfad.split('/').pop()!.replace(/\.(jpg|jpeg|png)$/, '');
+    if (basis === name) return mod.default;
+  }
+  throw new Error(`Bild "${name}" nicht in src/assets gefunden`);
 };
 
 const { produkt } = Astro.props;
-const andere = produkte.filter((p) => p.slug !== produkt.slug);
+const idx = produkte.findIndex((p) => p.slug === produkt.slug);
+const vorher = idx > 0 ? produkte[idx - 1] : undefined;
+const nachher = idx < produkte.length - 1 ? produkte[idx + 1] : undefined;
 
 const title = `${produkt.kategorie} – Staudt Hydraulik`;
-const description = `${produkt.titel} ${produkt.untertitel} – ein Referenzprodukt aus der Fertigung von Staudt Hydraulik, Geilenkirchen.`;
+const description = `${produkt.titel}${produkt.untertitel ? ` ${produkt.untertitel}` : ''} – ${produkt.kategorie} aus der Fertigung von Staudt Hydraulik, Geilenkirchen.`;
 
 const anfrageMailto =
   `${contact.emailHref}?subject=${encodeURIComponent(`Anfrage: ${produkt.kategorie}`)}`;
@@ -41,18 +45,18 @@ const anfrageMailto =
   <section class="band page-hero">
     <div class="shell">
       <nav class="crumbs" aria-label="Pfad">
-        <a href="/">Start</a>
+        <a href="/hydraulikzylinder/">Hydraulikzylinder</a>
         <Icon name="ChevronRight" size={14} />
-        <span aria-current="page">{produkt.kategorie}</span>
+        <span aria-current="page">{produkt.nr} · {produkt.kategorie}</span>
       </nav>
       <h1>{produkt.kategorie}</h1>
     </div>
   </section>
 
-  <div class="grafikband">
+  <div class:list={['grafikband', { 'grafikband--hell': produkt.grafikHell }]}>
     <div class="shell">
       <Image
-        src={bilder[produkt.grafik]!}
+        src={bild(produkt.grafik)}
         alt={produkt.grafikAlt}
         widths={[768, 1200, 1800]}
         sizes="(min-width: 64rem) 72rem, 100vw"
@@ -68,7 +72,7 @@ const anfrageMailto =
     <div class="shell produkt">
       <figure class="produkt__figure" data-reveal>
         <Image
-          src={bilder[produkt.foto]!}
+          src={bild(produkt.foto)}
           alt={produkt.fotoAlt}
           widths={[480, 720, 980]}
           sizes="(min-width: 60rem) 42vw, 100vw"
@@ -79,30 +83,41 @@ const anfrageMailto =
       </figure>
 
       <div class="produkt__copy">
-        <p class="eyebrow">Referenzprodukt</p>
+        <p class="eyebrow">Referenzprodukt {produkt.nr}</p>
         <h2>{produkt.titel}</h2>
-        <p class="produkt__unter">{produkt.untertitel}</p>
+        {produkt.untertitel && <p class="produkt__unter">{produkt.untertitel}</p>}
+        {
+          produkt.absaetze && (
+            <div class="prose">
+              {produkt.absaetze.map((a) => (
+                <p>{a}</p>
+              ))}
+            </div>
+          )
+        }
 
-        <div class="daten" data-reveal>
-          <p class="daten__label">Technische Daten</p>
-          {
-            produkt.daten.map((gruppe, gi) => (
-              <table class="daten__tabelle">
-                {produkt.datenGruppen && (
-                  <caption>{produkt.datenGruppen[gi]}</caption>
-                )}
-                <tbody>
-                  {gruppe.map((d) => (
-                    <tr>
-                      <th scope="row">{d.label}</th>
-                      <td>{d.wert}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ))
-          }
-        </div>
+        {
+          produkt.daten.length > 0 && (
+            <div class="daten" data-reveal>
+              <p class="daten__label">Technische Daten</p>
+              {produkt.daten.map((gruppe, gi) => (
+                <table class="daten__tabelle">
+                  {produkt.datenGruppen && <caption>{produkt.datenGruppen[gi]}</caption>}
+                  <tbody>
+                    {gruppe.map((d) => (
+                      <tr>
+                        <th scope="row">{d.label}</th>
+                        <td>{d.wert}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ))}
+            </div>
+          )
+        }
+
+        {produkt.hinweis && <p class="produkt__hinweis">{produkt.hinweis}</p>}
 
         <a class="btn btn--primary" href={anfrageMailto}>
           <Icon name="Mail" size={18} />
@@ -117,15 +132,31 @@ const anfrageMailto =
       <h2>Weitere Referenzprodukte</h2>
       <ul>
         {
-          andere.map((p) => (
+          vorher && (
             <li>
-              <a href={`/${p.slug}/`}>
-                {p.kategorie}
+              <a href={`/${vorher.slug}/`}>
+                <Icon name="ArrowRight" size={16} class="weitere__zurueck" />
+                {vorher.nr} · {vorher.kategorie}
+              </a>
+            </li>
+          )
+        }
+        {
+          nachher && (
+            <li>
+              <a href={`/${nachher.slug}/`}>
+                {nachher.nr} · {nachher.kategorie}
                 <Icon name="ArrowRight" size={16} />
               </a>
             </li>
-          ))
+          )
         }
+        <li>
+          <a href="/hydraulikzylinder/">
+            Alle Hydraulikzylinder
+            <Icon name="ArrowRight" size={16} />
+          </a>
+        </li>
       </ul>
     </div>
   </section>
@@ -173,15 +204,22 @@ const anfrageMailto =
     flex: none;
   }
 
-  /* Technische Zeichnung der Vorlage (weiß auf schwarz) als volles Band */
+  /* Technische Zeichnung als Band: schwarz für helle Linien, hell für dunkle */
   .grafikband {
     background: #0c0c0c;
     padding-block: var(--space-lg);
   }
 
+  .grafikband--hell {
+    background: var(--wash);
+    border-block: 1px solid var(--line);
+  }
+
   .grafikband :global(.grafikband__img) {
     width: 100%;
     height: auto;
+    max-height: 380px;
+    object-fit: contain;
   }
 
   .produkt {
@@ -210,6 +248,15 @@ const anfrageMailto =
   .produkt__unter {
     color: var(--soft);
     font-size: 1.125rem;
+  }
+
+  .produkt__hinweis {
+    color: var(--soft);
+    background: var(--wash);
+    border-left: 4px solid var(--steel);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--step-small);
   }
 
   .daten {
@@ -247,15 +294,16 @@ const anfrageMailto =
     text-align: left;
     font-weight: 500;
     color: var(--soft);
-    padding: 0.45rem 0.5rem 0.45rem 0;
-    width: 60%;
+    padding: 0.45rem 0.75rem 0.45rem 0;
+    width: 42%;
+    vertical-align: top;
   }
 
   .daten__tabelle td {
     font-weight: 650;
     color: var(--ink);
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
+    padding: 0.45rem 0;
   }
 
   .daten__tabelle tr + tr th,
@@ -305,5 +353,9 @@ const anfrageMailto =
 
   .weitere a:hover {
     border-color: var(--steel);
+  }
+
+  .weitere :global(.weitere__zurueck) {
+    rotate: 180deg;
   }
 </style>
