@@ -224,8 +224,7 @@ const beliebt = [
 
   .suche :global(.pagefind-ui__search-input:focus-visible) {
     outline: 3px solid var(--action);
-    outline-offset: 2px;
-    border-color: var(--steel);
+    outline-offset: 4px;
   }
 
   .suche :global(.pagefind-ui__search-clear) {
@@ -241,12 +240,13 @@ const beliebt = [
     padding-top: var(--space-md);
   }
 
-  /* Ergebnisse als Karten */
+  /* Ergebnisse als Karten — großzügiges Innenpolster, damit der Rahmen
+     nie am Inhalt klebt. */
   .suche :global(.pagefind-ui__result) {
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    padding: var(--space-md) var(--space-lg);
-    margin-top: var(--space-sm);
+    padding: var(--space-lg);
+    margin-top: var(--space-md);
     background: #fff;
   }
 
@@ -259,9 +259,9 @@ const beliebt = [
     }
 
     .suche :global(.pagefind-ui__result:hover) {
-      border-color: var(--steel);
-      box-shadow: var(--shadow-soft);
-      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow-lift);
+      transform: translateY(-3px);
     }
   }
 
