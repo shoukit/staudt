@@ -244,4 +244,21 @@ a {
     opacity: 1;
     translate: 0 0;
   }
+
+  /* Kaskade: Geschwister-Karten in Rastern erscheinen leicht versetzt. */
+  html.js [data-reveal]:nth-child(2) {
+    transition-delay: 90ms;
+  }
+
+  html.js [data-reveal]:nth-child(3) {
+    transition-delay: 180ms;
+  }
+
+  html.js [data-reveal]:nth-child(4) {
+    transition-delay: 270ms;
+  }
+
+  html.js [data-reveal]:nth-child(n + 5) {
+    transition-delay: 360ms;
+  }
 }
