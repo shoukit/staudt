@@ -46,8 +46,36 @@ h4 {
   text-wrap: balance;
 }
 
+/* Display-Ebene im Stil der Banner-Typografie (leicht, human), Lese-Ebene bleibt Poppins */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 360;
+  letter-spacing: -0.005em;
+  line-height: 1.12;
+  color: var(--steel);
+}
+
+h1 strong,
+h2 strong {
+  font-weight: 550;
+}
+
+/* Kleine Karten-Überschriften bleiben in der UI-Schrift — Leichtschnitte
+   funktionieren nur groß. */
+.person__body h2,
+.service h2,
+.kachel__body h2,
+.ausbildung h2 {
+  font-family: var(--font);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.18;
+  color: var(--slate);
+}
+
 h1 {
-  font-size: var(--step-h1);
+  font-size: clamp(2.2rem, 1.6rem + 2.8vw, 3.6rem);
 }
 
 h2 {
