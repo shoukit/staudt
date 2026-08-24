@@ -48,7 +48,7 @@ export const vorteile = [
   },
   {
     titel: 'Zertifizierung',
-    text: 'Seit 2001 DIN EN ISO 9001:2015, seit 2019 nach EN ISO 3834-3',
+    text: 'Seit 2001 DIN EN ISO 9001:2015, seit 2019 nach EN ISO 3834-3 & Ex EN ISO 3834-3',
     icon: 'icon-zertifizierung',
   },
   {
@@ -74,22 +74,22 @@ export const leistungen = [
   {
     titel: 'Serienfertigung',
     text: 'Effiziente Produktion mittlerer und großer Serien mit gleichbleibender Qualität.',
-    foto: 'zylinderteile',
-    fotoAlt: 'Präzise gefertigte Zylinderbauteile aus der Serienfertigung',
+    foto: 'slide-serienfertigung',
+    fotoAlt: 'Serienfertigung: präzise gefertigte Zylinderböden',
     href: '/01-einfachwirkende-hydraulikzylinder/',
   },
   {
     titel: 'Sonderlösungen',
     text: 'Individuelle Konstruktionen für besondere Einbausituationen, spezielle Drücke und Umgebungen.',
-    foto: 'teleskopzylinder',
-    fotoAlt: 'Mehrstufiger Teleskopzylinder als Sonderlösung',
+    foto: 'slide-sonderloesungen',
+    fotoAlt: 'Sonderlösung: Spezialzylinder mit Lochplatten-Aufbau',
     href: '/08-teleskopzylinder/',
   },
   {
     titel: 'Hydraulikzylinder',
     text: 'Doppelt- und einfachwirkende Zylinder in allen Baugrößen – nach Norm oder kundenspezifisch.',
-    foto: 'kurzhub-plunger',
-    fotoAlt: 'Kurzhub-Plungerzylinder',
+    foto: 'slide-hydraulikzylinder',
+    fotoAlt: 'Bearbeitung eines Zylinderrohrs',
     href: '/01-einfachwirkende-hydraulikzylinder/',
   },
 ] as const;

@@ -66,6 +66,32 @@ dieser Eigenheiten, die die Firma bewusst prüfen/korrigieren sollte:
 - Broschüre verlinkt auf Flipsnack (extern, wie Vorlage).
 - Karriere: Bewerbungen laufen über mailto mit vorbefülltem Betreff pro Stelle.
 
+## 100%-Audit (Original vs. Nachbau)
+
+Vollständig geprüft am Stand des letzten Commits:
+
+- **Bilder**: Alle 16 Produktfotos, 12 Zeichnungen, alle Icons, Branchen-, Team- und
+  Sektionsbilder sind **byte-identisch** mit der Vorlage (SHA-256-Abgleich). Die 4 bewusst
+  invertierten Zeichnungen (helle Linien → helles Band) sind dokumentiert. Die
+  Leistungs-Karten der Startseite nutzen jetzt die **originalen Slider-Bilder** der Vorlage
+  (Serienfertigung-neu.jpg, Sonderloesungen.jpg, Hydraulikzylinder.jpg — per
+  WordPress-Media-API nachgeladen).
+- **Texte**: Produktseiten wortwörtlich 1:1 (automatischer Fragment-Abgleich). Übrige Seiten
+  1:1 bis auf diese dokumentierten Korrekturen: „Anwenungen"→„Anwendungen",
+  „Reparatursevice"→„Reparaturservice", „herrvorragende"→„hervorragende",
+  „Hydraulikzylindenrn"→„Hydraulikzylindern", „Zerspanungsmechniker"→„Zerspanungsmechaniker",
+  „nach mAss"→„nach Maß", „100%"→„100 %", „On - & Offshore"→„On- & Offshore",
+  „Finite Elemente Methode"→„Finite-Elemente-Methode", „Service an, um"→„Service, um",
+  „400mm"→„400 mm". Ergänzt nach Audit: Zertifizierung wieder vollständig inkl.
+  „& Ex EN ISO 3834-3" (war anfangs verkürzt).
+- **Links**: alle 26 Seiten gecrawlt — keine kaputten internen Links oder Bilder.
+- **Formular**: End-to-End getestet — Zylindertyp-Auswahl (Optionen 1:1 wie Vorlage),
+  Name, Nachricht → erzeugt korrekt vorbefüllte E-Mail an info@staudt-hydraulik.de mit
+  Betreff „Anfrage: <Typ>"; ohne JavaScript direkter E-Mail-Link.
+- Nicht übernommen (bewusst): der englischsprachige Formularblock der Original-Startseite
+  („Your Name / Last Name …") — konsolidiert auf die Kontaktseite; der Satz „Sie haben ein
+  Projekt und brauchen Unterstützung. Wir beraten Sie gerne." ging damit auf.
+
 ## Technisch
 
 - `npm run dev` lokal · `npm run build` → `dist/` (committet, FTP-fertig).
