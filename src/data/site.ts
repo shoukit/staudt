@@ -16,10 +16,10 @@ export const contact = {
   postalCode: '52511',
   city: 'Geilenkirchen',
   country: 'DE',
-  phone: '02451 8037',
+  phone: '+49 2451 8037',
   phoneIntl: '+49 2451 8037',
   phoneHref: 'tel:+4924518037',
-  fax: '02451 66679',
+  fax: '+49 2451 66679',
   email: 'info@staudt-hydraulik.de',
   emailHref: 'mailto:info@staudt-hydraulik.de',
 } as const;

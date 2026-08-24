@@ -206,9 +206,21 @@ const description =
     }
   }
 
-  @media (min-width: 64rem) {
-    .team {
-      grid-template-columns: repeat(4, 1fr);
+  /* Ab Desktop liegende Karten (Foto links, Text rechts), zwei pro Reihe —
+     so laufen auch die langen E-Mail-Adressen einzeilig. */
+  @media (min-width: 72rem) {
+    .person {
+      grid-template-columns: clamp(11rem, 16vw, 13rem) 1fr;
+    }
+
+    .person :global(.person__img) {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .person__body {
+      padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+      align-content: center;
     }
   }
 
