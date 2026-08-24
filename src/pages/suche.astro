@@ -215,6 +215,7 @@ const beliebt = [
     font-size: 1.0625rem;
     height: 3.5rem;
     padding-left: 3.2rem;
+    padding-right: 5.5rem;
     background: var(--paper);
   }
 
@@ -227,10 +228,19 @@ const beliebt = [
     outline-offset: 4px;
   }
 
+  /* „Leeren" sauber in der Pille halten: transparenter Grund, nie höher als
+     das Feld — sonst stanzt der Button eine Kerbe in den runden Rand. */
   .suche :global(.pagefind-ui__search-clear) {
+    position: absolute;
+    top: 6px;
+    bottom: auto;
+    right: 8px;
+    height: calc(3.5rem - 12px);
+    padding-inline: 0.9rem;
+    background: transparent;
+    border-radius: var(--radius-pill);
     color: var(--steel);
     font-weight: 600;
-    padding-right: 1.2rem;
   }
 
   /* Trefferzeile */

@@ -102,6 +102,14 @@ const description =
           <input type="text" name="name" autocomplete="name" />
         </label>
         <label class="formular__feld">
+          <span>Unternehmen</span>
+          <input type="text" name="unternehmen" autocomplete="organization" />
+        </label>
+        <label class="formular__feld">
+          <span>Geschäftliche E-Mail</span>
+          <input type="email" name="email" autocomplete="work email" inputmode="email" />
+        </label>
+        <label class="formular__feld">
           <span>Ihre Nachricht</span>
           <textarea name="nachricht" rows="5"></textarea>
         </label>
@@ -131,9 +139,16 @@ const description =
       const daten = new FormData(form);
       const typ = String(daten.get('typ') || '');
       const name = String(daten.get('name') || '');
+      const unternehmen = String(daten.get('unternehmen') || '');
+      const email = String(daten.get('email') || '');
       const nachricht = String(daten.get('nachricht') || '');
       const subject = typ ? `Anfrage: ${typ}` : 'Anfrage über die Website';
-      const body = `${nachricht}\n\n${name ? `Name: ${name}\n` : ''}${typ ? `Zylindertyp: ${typ}\n` : ''}`;
+      const body =
+        `${nachricht}\n\n` +
+        `${name ? `Name: ${name}\n` : ''}` +
+        `${unternehmen ? `Unternehmen: ${unternehmen}\n` : ''}` +
+        `${email ? `E-Mail: ${email}\n` : ''}` +
+        `${typ ? `Zylindertyp: ${typ}\n` : ''}`;
       window.location.href = `mailto:info@staudt-hydraulik.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   </script>
