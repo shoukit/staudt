@@ -1,0 +1,103 @@
+---
+/**
+ * Abschlussband der Vorlage: „Sprechen Sie mit uns" + Kontaktdaten.
+ * Statt des toten WP-Formulars: direkte Wege (Telefon primär sichtbar,
+ * E-Mail als primäre Aktion).
+ */
+import Icon from './Icon.astro';
+import { contact, kontaktBand } from '../data/site';
+---
+
+<section class="band band--slate kband">
+  <div class="shell kband__grid" data-reveal>
+    <div class="kband__copy">
+      <h2>{kontaktBand.titel}</h2>
+      <p>{kontaktBand.text}</p>
+      <div class="kband__actions">
+        <a class="btn btn--primary" href={contact.emailHref}>
+          <Icon name="Mail" size={18} />
+          Kontaktieren Sie uns
+        </a>
+        <a class="btn btn--ghost" href={contact.phoneHref}>
+          <Icon name="Phone" size={17} />
+          {contact.phone}
+        </a>
+      </div>
+    </div>
+    <ul class="kband__facts">
+      <li>
+        <Icon name="Phone" size={18} />
+        <span>Tel. {contact.phoneIntl}</span>
+      </li>
+      <li>
+        <Icon name="Printer" size={18} />
+        <span>Fax {contact.fax}</span>
+      </li>
+      <li>
+        <Icon name="Mail" size={18} />
+        <a href={contact.emailHref}>{contact.email}</a>
+      </li>
+      <li>
+        <Icon name="MapPin" size={18} />
+        <span>{contact.street}, {contact.postalCode} {contact.city}</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .kband__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .kband__copy {
+    display: grid;
+    gap: var(--space-md);
+    justify-items: start;
+  }
+
+  .kband__copy p {
+    max-width: 48ch;
+  }
+
+  .kband__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .kband__facts {
+    list-style: none;
+    padding: var(--space-lg);
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+    background: rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: var(--radius-lg);
+    font-size: var(--step-small);
+  }
+
+  .kband__facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+  }
+
+  .kband__facts :global(svg) {
+    color: #9ec2e8;
+    flex: none;
+  }
+
+  .kband__facts a {
+    color: #fff;
+  }
+
+  @media (min-width: 60rem) {
+    .kband__grid {
+      grid-template-columns: 1.3fr 0.9fr;
+    }
+  }
+</style>

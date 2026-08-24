@@ -1,0 +1,243 @@
+---
+/**
+ * Wir über uns — Texte 1:1 der Vorlage; Historie als Timeline-Grafik der
+ * Vorlage (timeline-2.png).
+ */
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import KontaktBand from '../components/KontaktBand.astro';
+import { ueberUns } from '../data/site';
+
+import cncDrehen from '../assets/cnc-drehen.jpg';
+import fertigungshalle from '../assets/fertigungshalle.jpg';
+import timeline from '../assets/historie-timeline.png';
+
+const title = 'Wir über uns – Staudt Hydraulik, Geilenkirchen';
+const description =
+  'Staudt-Hydraulik GmbH & Co. KG: familiengeführtes Spezialunternehmen für Hydraulikzylinder in Geilenkirchen. Sonderkonstruktionen bis 20 Tonnen, CAD/FEM-Konstruktion, Fertigung in Deutschland.';
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell page-hero__grid">
+      <div class="page-hero__copy">
+        <p class="eyebrow">Wir über uns</p>
+        <h1>{ueberUns.h1}</h1>
+        <div class="prose">
+          {ueberUns.intro.map((a) => <p>{a}</p>)}
+        </div>
+      </div>
+      <figure class="page-hero__figure">
+        <Image
+          src={cncDrehen}
+          alt="Mitarbeiter beim CNC-Drehen bei Staudt Hydraulik"
+          widths={[480, 720, 980]}
+          sizes="(min-width: 60rem) 44vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={82}
+          class="page-hero__img"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell entwicklung">
+      <div class="prose" data-reveal>
+        <h2>{ueberUns.entwicklung.titel}</h2>
+        {ueberUns.entwicklung.absaetze.map((a) => <p>{a}</p>)}
+      </div>
+      <aside class="fakten" data-reveal>
+        <p class="fakten__label">Auf einen Blick</p>
+        <ul>
+          <li><Icon name="Check" size={17} /> Familiengeführt in 3. Generation</li>
+          <li><Icon name="Check" size={17} /> Seit 1978 Spezialist für Hydraulikzylinder</li>
+          <li><Icon name="Check" size={17} /> Hydraulikzylinder bis 20 Tonnen Stückgewicht</li>
+          <li><Icon name="Check" size={17} /> DIN EN ISO 9001:2015 · EN ISO 3834-3</li>
+          <li><Icon name="Check" size={17} /> Entwicklung, Fertigung &amp; Prüfung in Deutschland</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell mass">
+      <figure class="mass__figure" data-reveal>
+        <Image
+          src={fertigungshalle}
+          alt="Fertigungshalle mit CNC-Maschinen"
+          widths={[480, 720, 980]}
+          sizes="(min-width: 60rem) 44vw, 100vw"
+          loading="lazy"
+          quality={82}
+          class="mass__img"
+        />
+      </figure>
+      <div class="prose" data-reveal>
+        <h2>{ueberUns.nachMass.titel}</h2>
+        <p>{ueberUns.nachMass.text}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--wash" id="historie">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Historie</p>
+        <h2>Unsere Geschichte seit 1959</h2>
+      </div>
+      <figure class="historie" data-reveal>
+        <Image
+          src={timeline}
+          alt="Zeitleiste der Unternehmensgeschichte von Staudt Hydraulik von 1959 bis heute"
+          widths={[768, 1200, 1800]}
+          sizes="(min-width: 64rem) 72rem, 100vw"
+          loading="lazy"
+          quality={85}
+          class="historie__img"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <KontaktBand />
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .page-hero__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .page-hero__copy {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .page-hero__figure {
+    margin: 0;
+  }
+
+  .page-hero :global(.page-hero__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  @media (min-width: 60rem) {
+    .page-hero__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  .entwicklung {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .fakten {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: var(--space-lg);
+  }
+
+  .fakten__label {
+    font-size: var(--step-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: var(--space-md);
+  }
+
+  .fakten ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .fakten li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-xs);
+    align-items: start;
+    font-size: var(--step-small);
+    color: var(--soft);
+    font-weight: 500;
+  }
+
+  .fakten :global(svg) {
+    color: var(--steel);
+    margin-top: 0.15em;
+  }
+
+  @media (min-width: 60rem) {
+    .entwicklung {
+      grid-template-columns: 1.3fr 0.8fr;
+    }
+
+    .fakten {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .mass {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .mass__figure {
+    margin: 0;
+  }
+
+  .mass :global(.mass__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  @media (min-width: 60rem) {
+    .mass {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+
+  .historie {
+    margin: 0;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: clamp(1rem, 3vw, 2.5rem);
+    overflow-x: auto;
+  }
+
+  .historie :global(.historie__img) {
+    width: 100%;
+    min-width: 640px;
+    height: auto;
+  }
+
+  #historie {
+    scroll-margin-top: 5rem;
+  }
+</style>

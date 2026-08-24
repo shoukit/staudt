@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://staudt-hydraulik.de/sitemap-index.xml

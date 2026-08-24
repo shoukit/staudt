@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+
+const title = 'Seite nicht gefunden – Staudt Hydraulik';
+const description = 'Diese Seite existiert nicht (mehr). Zur Startseite von Staudt Hydraulik.';
+---
+
+<Base title={title} description={description}>
+  <section class="band nf">
+    <div class="shell">
+      <p class="eyebrow">Fehler 404</p>
+      <h1>Diese Seite gibt es nicht (mehr)</h1>
+      <p class="lead">Von der Startseite aus finden Sie alles wieder.</p>
+      <a class="btn btn--primary" href="/">
+        <Icon name="ArrowRight" size={17} />
+        Zur Startseite
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 50vh;
+    display: grid;
+    align-items: center;
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+  }
+
+  .nf .shell {
+    display: grid;
+    gap: var(--space-md);
+    justify-items: start;
+  }
+</style>

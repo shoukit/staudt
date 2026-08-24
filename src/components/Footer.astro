@@ -1,0 +1,192 @@
+---
+/**
+ * Footer: Logo + Claim, NAP, Seiten, Rechtliches.
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { contact, nav, site } from '../data/site';
+import logo from '../assets/logo.png';
+
+const jahr = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell footer__grid">
+    <div class="footer__brand">
+      <Image
+        src={logo}
+        alt=""
+        widths={[200, 400]}
+        sizes="200px"
+        loading="lazy"
+        quality={90}
+        class="footer__logo"
+      />
+      <p class="footer__claim">{site.claim}</p>
+      <address class="footer__address">
+        <p><Icon name="MapPin" size={16} /> {contact.street}, {contact.postalCode} {contact.city}</p>
+        <p><Icon name="Phone" size={16} /> <a href={contact.phoneHref}>Tel. {contact.phone}</a></p>
+        <p><Icon name="Printer" size={16} /> Fax {contact.fax}</p>
+        <p><Icon name="Mail" size={16} /> <a href={contact.emailHref}>{contact.email}</a></p>
+      </address>
+    </div>
+
+    <div>
+      <p class="footer__label">Seiten</p>
+      <ul class="footer__nav">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="footer__label">Unternehmen</p>
+      <p class="footer__legalname">{site.legalName}</p>
+      <p class="footer__note">
+        Familiengeführt in 3. Generation — Entwicklung, Fertigung, Montage und Prüfung von
+        Hydraulikzylindern in Deutschland.
+      </p>
+    </div>
+  </div>
+
+  <div class="shell footer__legal">
+    <p>© {jahr} {site.legalName} · All rights reserved</p>
+    <ul>
+      <li><a href="/impressum/">Impressum</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--slate-deep);
+    color: #dbe3ea;
+    padding-block: var(--space-2xl) var(--space-lg);
+    margin-top: auto;
+  }
+
+  .footer a {
+    color: #fff;
+  }
+
+  .footer__grid {
+    display: grid;
+    gap: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  .footer :global(.footer__logo) {
+    width: 200px;
+    height: auto;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.9rem;
+  }
+
+  .footer__claim {
+    margin-top: var(--space-sm);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .footer__address {
+    font-style: normal;
+    display: grid;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+    font-size: var(--step-small);
+  }
+
+  .footer__address p {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+
+  .footer__address :global(svg) {
+    flex: none;
+    color: #9ec2e8;
+  }
+
+  .footer__label {
+    font-size: var(--step-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: #9ec2e8;
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+  }
+
+  .footer__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    font-size: var(--step-small);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .footer__nav a:hover {
+    text-decoration: underline;
+  }
+
+  .footer__legalname {
+    font-weight: 600;
+    color: #fff;
+    font-size: var(--step-small);
+  }
+
+  .footer__note {
+    margin-top: var(--space-xs);
+    font-size: var(--step-small);
+    max-width: 36ch;
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    padding-top: var(--space-md);
+    font-size: var(--step-small);
+  }
+
+  .footer__legal ul {
+    list-style: none;
+    display: flex;
+    gap: var(--space-md);
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer__legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    text-decoration: none;
+  }
+
+  .footer__legal a:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 48rem) {
+    .footer__grid {
+      grid-template-columns: 1.4fr 0.8fr 1fr;
+    }
+  }
+</style>

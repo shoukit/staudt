@@ -1,0 +1,84 @@
+---
+/**
+ * Impressum, Kerndaten 1:1 der Vorlage (gekürzt um WP-spezifische Passagen;
+ * Haftungstexte siehe docs/uebergabe.md).
+ */
+import Base from '../layouts/Base.astro';
+import { contact, site } from '../data/site';
+
+const title = 'Impressum – Staudt Hydraulik';
+const description = 'Impressum der Staudt-Hydraulik GmbH & Co. KG, Ottostraße 8, 52511 Geilenkirchen.';
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell">
+      <p class="eyebrow">Rechtliches</p>
+      <h1>Impressum</h1>
+    </div>
+  </section>
+
+  <section class="band band--tight">
+    <div class="shell prose legal">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p>
+        <strong>{site.legalName}</strong><br />
+        {contact.street}<br />
+        {contact.postalCode} {contact.city}
+      </p>
+      <p>
+        Tel. {contact.phoneIntl}<br />
+        Fax {contact.fax}<br />
+        E-Mail: <a href={contact.emailHref}>{contact.email}</a>
+      </p>
+      <p>Vertretungsberechtigte: Josef Staudt, Thomas Staudt</p>
+      <p>
+        HRA 4992<br />
+        USt-IdNr. DE 323 033 714
+      </p>
+
+      <h2>Bilder und Fotos</h2>
+      <p>
+        Fotos: Andreas Hirsch<br />
+        Branchenbilder: Shutterstock
+      </p>
+
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
+        nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
+        Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
+        Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige
+        Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von
+        Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine
+        diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten
+        Rechtsverletzung möglich.
+      </p>
+      <p>
+        {site.legalName} übernimmt keine Garantie oder Haftung, insbesondere nicht für direkte
+        oder indirekte Schäden, die durch die Nutzung der Informationen oder Daten, die auf den
+        Staudt-Websites zu finden sind, entstehen. {site.legalName} übernimmt insbesondere keine
+        Verantwortung für Inhalte oder die Funktionsfähigkeit, Fehlerfreiheit oder Rechtmäßigkeit
+        von Webseiten Dritter, auf die mittels Link von den Staudt-Websites verwiesen wird.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl);
+  }
+
+  .band--tight {
+    padding-block: var(--space-xl);
+  }
+
+  .legal h2 {
+    font-size: var(--step-h3);
+    margin-top: var(--space-md);
+  }
+</style>

@@ -1,0 +1,132 @@
+---
+/**
+ * The only page shell. Owns <head>, skip link, header, footer and structured
+ * data. Pages pass meta as props, never write their own tags.
+ */
+import '../styles/fonts.css';
+import '../styles/global.css';
+
+import poppins400 from '@fontsource/poppins/files/poppins-latin-400-normal.woff2?url';
+import poppins600 from '@fontsource/poppins/files/poppins-latin-600-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { contact, site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  schema?: Record<string, unknown>[];
+  ogImage?: string;
+}
+
+const { title, description, schema = [], ogImage = '/og-default.jpg' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImageUrl = new URL(ogImage, site.url).href;
+
+const orgNode = {
+  '@type': 'Organization',
+  '@id': `${site.url}/#org`,
+  name: site.legalName,
+  alternateName: site.name,
+  description: 'Spezialist für Hydraulikzylinder: Entwicklung, CNC-Fertigung, Montage und Prüfung in Deutschland — Serienfertigung und Sonderlösungen seit 1978.',
+  url: site.url,
+  telephone: contact.phoneIntl,
+  faxNumber: contact.fax,
+  email: contact.email,
+  vatID: 'DE 323 033 714',
+  foundingDate: '1978',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: contact.street,
+    postalCode: contact.postalCode,
+    addressLocality: contact.city,
+    addressCountry: contact.country,
+  },
+  availableLanguage: 'de',
+};
+
+const graph = [orgNode, ...schema];
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Before first paint: reveal CSS only hides content when .js is present,
+        so nothing is ever stranded invisible without JavaScript. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} – ${site.claim}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin />
+
+    <meta name="theme-color" content="#264152" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}
+    />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <Header />
+    <main id="inhalt">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Progressive enhancement only: without it every section is visible.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const targets = document.querySelectorAll('[data-reveal]');
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' }
+        );
+        targets.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

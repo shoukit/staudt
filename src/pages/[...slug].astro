@@ -1,0 +1,309 @@
+---
+/**
+ * Produkt-Detailseiten an den Original-Slugs. Technische Daten als echte
+ * Tabellen (Verbesserung ggü. der losen Textliste der Vorlage).
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import KontaktBand from '../components/KontaktBand.astro';
+import { produkte } from '../data/produkte';
+import { contact } from '../data/site';
+
+import grafikEinfach from '../assets/einfachwirkend-grafik.png';
+import grafikTeleskop from '../assets/teleskop-grafik.png';
+import fotoPlunger from '../assets/kurzhub-plunger.jpg';
+import fotoTeleskop from '../assets/teleskopzylinder.jpg';
+
+export function getStaticPaths() {
+  return produkte.map((p) => ({ params: { slug: p.slug }, props: { produkt: p } }));
+}
+
+const bilder: Record<string, ImageMetadata> = {
+  'einfachwirkend-grafik': grafikEinfach,
+  'teleskop-grafik': grafikTeleskop,
+  'kurzhub-plunger': fotoPlunger,
+  teleskopzylinder: fotoTeleskop,
+};
+
+const { produkt } = Astro.props;
+const andere = produkte.filter((p) => p.slug !== produkt.slug);
+
+const title = `${produkt.kategorie} – Staudt Hydraulik`;
+const description = `${produkt.titel} ${produkt.untertitel} – ein Referenzprodukt aus der Fertigung von Staudt Hydraulik, Geilenkirchen.`;
+
+const anfrageMailto =
+  `${contact.emailHref}?subject=${encodeURIComponent(`Anfrage: ${produkt.kategorie}`)}`;
+---
+
+<Base title={title} description={description}>
+  <section class="band page-hero">
+    <div class="shell">
+      <nav class="crumbs" aria-label="Pfad">
+        <a href="/">Start</a>
+        <Icon name="ChevronRight" size={14} />
+        <span aria-current="page">{produkt.kategorie}</span>
+      </nav>
+      <h1>{produkt.kategorie}</h1>
+    </div>
+  </section>
+
+  <div class="grafikband">
+    <div class="shell">
+      <Image
+        src={bilder[produkt.grafik]!}
+        alt={produkt.grafikAlt}
+        widths={[768, 1200, 1800]}
+        sizes="(min-width: 64rem) 72rem, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={85}
+        class="grafikband__img"
+      />
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="shell produkt">
+      <figure class="produkt__figure" data-reveal>
+        <Image
+          src={bilder[produkt.foto]!}
+          alt={produkt.fotoAlt}
+          widths={[480, 720, 980]}
+          sizes="(min-width: 60rem) 42vw, 100vw"
+          loading="lazy"
+          quality={82}
+          class="produkt__img"
+        />
+      </figure>
+
+      <div class="produkt__copy">
+        <p class="eyebrow">Referenzprodukt</p>
+        <h2>{produkt.titel}</h2>
+        <p class="produkt__unter">{produkt.untertitel}</p>
+
+        <div class="daten" data-reveal>
+          <p class="daten__label">Technische Daten</p>
+          {
+            produkt.daten.map((gruppe, gi) => (
+              <table class="daten__tabelle">
+                {produkt.datenGruppen && (
+                  <caption>{produkt.datenGruppen[gi]}</caption>
+                )}
+                <tbody>
+                  {gruppe.map((d) => (
+                    <tr>
+                      <th scope="row">{d.label}</th>
+                      <td>{d.wert}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ))
+          }
+        </div>
+
+        <a class="btn btn--primary" href={anfrageMailto}>
+          <Icon name="Mail" size={18} />
+          Anfragen
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--wash">
+    <div class="shell weitere">
+      <h2>Weitere Referenzprodukte</h2>
+      <ul>
+        {
+          andere.map((p) => (
+            <li>
+              <a href={`/${p.slug}/`}>
+                {p.kategorie}
+                <Icon name="ArrowRight" size={16} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <KontaktBand />
+</Base>
+
+<style>
+  .page-hero {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #dde9f5 0%, transparent 55%),
+      linear-gradient(175deg, var(--wash) 0%, var(--paper) 72%);
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+
+  .page-hero .shell {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35em;
+    font-size: var(--step-small);
+    color: var(--soft);
+  }
+
+  .crumbs a {
+    color: var(--steel);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  .crumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .crumbs :global(svg) {
+    color: var(--line-strong);
+    flex: none;
+  }
+
+  /* Technische Zeichnung der Vorlage (weiß auf schwarz) als volles Band */
+  .grafikband {
+    background: #0c0c0c;
+    padding-block: var(--space-lg);
+  }
+
+  .grafikband :global(.grafikband__img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .produkt {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .produkt__figure {
+    margin: 0;
+  }
+
+  .produkt :global(.produkt__img) {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    width: 100%;
+    background: #fff;
+  }
+
+  .produkt__copy {
+    display: grid;
+    gap: var(--space-sm);
+    justify-items: start;
+  }
+
+  .produkt__unter {
+    color: var(--soft);
+    font-size: 1.125rem;
+  }
+
+  .daten {
+    width: 100%;
+    background: var(--wash);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: grid;
+    gap: var(--space-md);
+    margin-block: var(--space-sm);
+  }
+
+  .daten__label {
+    font-size: var(--step-eyebrow);
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+
+  .daten__tabelle {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step-small);
+  }
+
+  .daten__tabelle caption {
+    text-align: left;
+    font-weight: 650;
+    color: var(--slate);
+    padding-bottom: 0.35rem;
+  }
+
+  .daten__tabelle th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--soft);
+    padding: 0.45rem 0.5rem 0.45rem 0;
+    width: 60%;
+  }
+
+  .daten__tabelle td {
+    font-weight: 650;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .daten__tabelle tr + tr th,
+  .daten__tabelle tr + tr td {
+    border-top: 1px solid var(--line);
+  }
+
+  @media (min-width: 60rem) {
+    .produkt {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .produkt__figure {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .weitere {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .weitere ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .weitere a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: var(--tap);
+    padding: 0.5rem 1.25rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--step-small);
+    color: var(--steel);
+    text-decoration: none;
+  }
+
+  .weitere a:hover {
+    border-color: var(--steel);
+  }
+</style>

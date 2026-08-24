@@ -1,0 +1,56 @@
+/**
+ * Design tokens — Farben aus dem Elementor-CSS der Vorlage extrahiert.
+ *
+ * Kontraste, berechnet:
+ *   --ink #212121 auf Weiß 16.10:1 · --soft #4e5b6b auf Weiß 6.92:1, auf --wash 6.34:1
+ *   --steel #0F5BA3 auf Weiß 6.90:1 · Weiß auf --steel 6.90:1
+ *   --slate #264152 auf Weiß 10.71:1 · Weiß auf --slate 10.71:1
+ *   --action #1863DC auf Weiß 5.44:1 (Buttons/große Elemente)
+ *   --muted #8BA5B5 nur dekorativ (2.58:1 — nie für Text).
+ */
+:root {
+  --paper: #ffffff;
+  --wash: #f3f5f7;
+  --ink: #212121;
+  --soft: #4e5b6b;
+  --steel: #0f5ba3;
+  --slate: #264152;
+  --slate-deep: #1b3040;
+  --action: #1863dc;
+  --action-deep: #124eb0;
+  --muted: #8ba5b5;
+  --line: #dde3e9;
+  --line-strong: #9fb0bd;
+
+  --font: 'Poppins', system-ui, sans-serif;
+
+  --step-small: 0.9375rem;
+  --step-base: 1.0625rem;
+  --step-eyebrow: 0.8125rem;
+  --step-h3: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+  --step-h2: clamp(1.6rem, 1.3rem + 1.3vw, 2.3rem);
+  --step-h1: clamp(2rem, 1.5rem + 2.4vw, 3.2rem);
+  --track-caps: 0.14em;
+
+  --space-2xs: 0.375rem;
+  --space-xs: 0.625rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.25rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  --radius-sm: 10px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 1px 2px rgb(38 65 82 / 0.06), 0 10px 30px -12px rgb(38 65 82 / 0.16);
+  --shadow-lift: 0 2px 4px rgb(38 65 82 / 0.07), 0 22px 44px -16px rgb(38 65 82 / 0.24);
+
+  --shell: 72rem;
+  --tap: 44px;
+
+  --t-base: 0.25s;
+  --t-slow: 0.6s;
+  --ease: cubic-bezier(0.22, 0.7, 0.3, 1);
+}
